@@ -1,0 +1,3 @@
+﻿  avx2_math_x86_lib.cpp
+     Creating library D:\my_c_files\avx2_vectorised_functions\avx2_vectorised_functions\Debug\avx2_vectorised_functions_lib.lib and object D:\my_c_files\avx2_vectorised_functions\avx2_vectorised_functions\Debug\avx2_vectorised_functions_lib.exp
+  avx2_vectorised_functions_lib.vcxproj -> D:\my_c_files\avx2_vectorised_functions\avx2_vectorised_functions\Debug\avx2_vectorised_functions_lib.dll

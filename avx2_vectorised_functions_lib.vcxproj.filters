@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="asm_x86">
+      <UniqueIdentifier>{6691033c-7c8a-461d-b3eb-be8c7bfed5ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="asm_x86_incs">
+      <UniqueIdentifier>{4ca4cff8-2c03-495a-a121-8613897aa331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers">
+      <UniqueIdentifier>{6670b449-c20e-48db-8535-910066c39194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{7182c07a-2036-4dfa-9e68-86523a3f852f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\framework.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\pch.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\avx2_math_x86.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\avx2_math_x86_lib.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\avx2_utilities.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\math_constants.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\exp_funcs.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\log_funcs.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\trig_funcs.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\avx2_math_x86_lib.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="asm_x86\exp_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
+    <MASM Include="asm_x86\log_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
+    <MASM Include="asm_x86\sincos_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
+    <MASM Include="asm_x86\tancot_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
+    <MASM Include="asm_x86\acos_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
+    <MASM Include="asm_x86\asin_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
+    <MASM Include="asm_x86\atan_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="asm_x86_incs\exp_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\log_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\sincos_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\tancot_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\acos_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\asin_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\atan_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+  </ItemGroup>
+</Project>
