@@ -8,6 +8,7 @@ Most of the functions are motivated by Cephes (https://www.netlib.org/cephes/) l
 * exp (SPFP,DPFP)
 * natural log (SPFP,DPFP)
 * asin,acos,atan(SPFP,DPFP)
+* cosh (SPFP,DPFP)
 * other elementary functions coming up....
 
 ** SPFP = single-precision floating-point, DPFP = double-precision floating-point
