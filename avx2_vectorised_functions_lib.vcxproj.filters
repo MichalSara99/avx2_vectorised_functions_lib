@@ -46,6 +46,9 @@
     <ClInclude Include="headers\trig_funcs.h">
       <Filter>headers</Filter>
     </ClInclude>
+    <ClInclude Include="headers\hyp_funcs.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -80,6 +83,9 @@
     <MASM Include="asm_x86\atan_funcs_.asm">
       <Filter>asm_x86</Filter>
     </MASM>
+    <MASM Include="asm_x86\cosh_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <None Include="asm_x86_incs\exp_funcs.inc">
@@ -101,6 +107,9 @@
       <Filter>asm_x86_incs</Filter>
     </None>
     <None Include="asm_x86_incs\atan_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\cosh_funcs.inc">
       <Filter>asm_x86_incs</Filter>
     </None>
   </ItemGroup>
