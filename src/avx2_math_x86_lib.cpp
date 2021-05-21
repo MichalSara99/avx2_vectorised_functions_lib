@@ -370,6 +370,16 @@ template <> bool avx2_basics::cosh_avx2(float const *in_aligned_32, int size, fl
     return avx2_math::cosh_avx2_packed(in_aligned_32, size, out_aligned_32);
 }
 
+template <> bool avx2_basics::sinh_avx2(double const *in_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::sinh_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::sinh_avx2(float const *in_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::sinh_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
 /// ========================= UTILITY FUNCTIONS ================================
 
 template <> float *avx2_utility::aligned_alloc<float>(std::size_t size, std::size_t alignment)

@@ -724,6 +724,28 @@ template <> AVX2_MATH_X86_API bool cosh_avx2(double const *in_aligned_32, int si
  */
 template <> AVX2_MATH_X86_API bool cosh_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
 
+template <typename Type> bool sinh_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point hyperbolic sine
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool sinh_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point hyperbolic sine
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool sinh_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+
 } // namespace avx2_basics
 
 /// <summary>
