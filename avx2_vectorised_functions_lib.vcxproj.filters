@@ -89,6 +89,9 @@
     <MASM Include="asm_x86\sinh_funcs_.asm">
       <Filter>asm_x86</Filter>
     </MASM>
+    <MASM Include="asm_x86\tanh_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <None Include="asm_x86_incs\exp_funcs.inc">
@@ -116,6 +119,9 @@
       <Filter>asm_x86_incs</Filter>
     </None>
     <None Include="asm_x86_incs\sinh_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\tanh_funcs.inc">
       <Filter>asm_x86_incs</Filter>
     </None>
   </ItemGroup>

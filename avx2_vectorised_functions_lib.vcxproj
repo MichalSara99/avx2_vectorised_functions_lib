@@ -45,6 +45,7 @@
     <MASM Include="asm_x86\sincos_funcs_.asm" />
     <MASM Include="asm_x86\sinh_funcs_.asm" />
     <MASM Include="asm_x86\tancot_funcs_.asm" />
+    <MASM Include="asm_x86\tanh_funcs_.asm" />
   </ItemGroup>
   <ItemGroup>
     <None Include="asm_x86_incs\acos_funcs.inc" />
@@ -56,6 +57,7 @@
     <None Include="asm_x86_incs\sincos_funcs.inc" />
     <None Include="asm_x86_incs\sinh_funcs.inc" />
     <None Include="asm_x86_incs\tancot_funcs.inc" />
+    <None Include="asm_x86_incs\tanh_funcs.inc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
