@@ -1,6 +1,7 @@
 # AVX2 Vectorised Functions 32-bit library
 DLL library consisting of vectorised math functions written in Assembly x86-32 (using AVX2 technology) and calling in C++.
-Most of the functions are motivated by Cephes (https://www.netlib.org/cephes/) library
+Most of the functions are motivated by [Cephes](https://www.netlib.org/cephes/) library or 
+[Handbook of Mathematical Functions: with Formulas, Graphs, and Mathematical Tables](https://www.amazon.com/Handbook-Mathematical-Functions-Formulas-Mathematics/dp/0486612724)
 
 ## List of available functions
 * sin, cos (SPFP,DPFP)
