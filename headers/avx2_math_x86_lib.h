@@ -847,59 +847,59 @@ template <> AVX2_MATH_X86_API bool tanh_avx2(float const *in_aligned_32, int siz
 //
 //} // namespace avx2_normal_distribution
 //
-///// <summary>
-/////  ====================================================================================================
-/////  ======================================= avx2_specials  =============================================
-/////  ====================================================================================================
-///// </summary>
-//
-// namespace avx2_specials
-//{
-//
-// template <typename Type> bool erf_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point error function
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool erf_sse(double const *in_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point error function
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool erf_sse(float const *in_aligned_16, int size, float *out_aligned_16);
-//
-// template <typename Type> bool erfc_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point complementary error function
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool erfc_sse(double const *in_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point complementary error function
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool erfc_sse(float const *in_aligned_16, int size, float *out_aligned_16);
-//} // namespace avx2_specials
+/// <summary>
+///  ====================================================================================================
+///  ======================================= avx2_specials  =============================================
+///  ====================================================================================================
+/// </summary>
+
+namespace avx2_specials
+{
+
+template <typename Type> bool erf_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point error function
+ *
+ * \param in_aligned_16
+ * \param size
+ * \param out_aligned_16
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool erf_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point error function
+ *
+ * \param in_aligned_16
+ * \param size
+ * \param out_aligned_16
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool erf_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool erfc_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point complementary error function
+ *
+ * \param in_aligned_16
+ * \param size
+ * \param out_aligned_16
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool erfc_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point complementary error function
+ *
+ * \param in_aligned_16
+ * \param size
+ * \param out_aligned_16
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool erfc_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+} // namespace avx2_specials
 
 /// <summary>
 ///  ====================================================================================================

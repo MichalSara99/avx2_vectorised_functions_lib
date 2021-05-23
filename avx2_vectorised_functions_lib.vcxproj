@@ -28,6 +28,7 @@
     <ClInclude Include="headers\log_funcs.h" />
     <ClInclude Include="headers\math_constants.h" />
     <ClInclude Include="headers\pch.h" />
+    <ClInclude Include="headers\special_funcs.h" />
     <ClInclude Include="headers\trig_funcs.h" />
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +41,7 @@
     <MASM Include="asm_x86\asin_funcs_.asm" />
     <MASM Include="asm_x86\atan_funcs_.asm" />
     <MASM Include="asm_x86\cosh_funcs_.asm" />
+    <MASM Include="asm_x86\erf_funcs_.asm" />
     <MASM Include="asm_x86\exp_funcs_.asm" />
     <MASM Include="asm_x86\log_funcs_.asm" />
     <MASM Include="asm_x86\sincos_funcs_.asm" />
@@ -52,6 +54,7 @@
     <None Include="asm_x86_incs\asin_funcs.inc" />
     <None Include="asm_x86_incs\atan_funcs.inc" />
     <None Include="asm_x86_incs\cosh_funcs.inc" />
+    <None Include="asm_x86_incs\erf_funcs.inc" />
     <None Include="asm_x86_incs\exp_funcs.inc" />
     <None Include="asm_x86_incs\log_funcs.inc" />
     <None Include="asm_x86_incs\sincos_funcs.inc" />

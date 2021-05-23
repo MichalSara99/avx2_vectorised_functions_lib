@@ -266,28 +266,28 @@ template <> bool avx2_basics::log_avx2(double const *in_aligned_32, int size, do
 //    return sse_math::norm_inv_cdf_sse_packed(in_aligned_16, size, out_aligned_16);
 //}
 //
-///// =========================== SPECIAL FUNCTIONS =============================
-//
-// template <> bool avx2_specials::erf_sse(double const *in_aligned_16, int size, double *out_aligned_16)
-//{
-//    return sse_math::erf_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_specials::erf_sse(float const *in_aligned_16, int size, float *out_aligned_16)
-//{
-//    return sse_math::erf_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_specials::erfc_sse(double const *in_aligned_16, int size, double *out_aligned_16)
-//{
-//    return sse_math::erfc_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_specials::erfc_sse(float const *in_aligned_16, int size, float *out_aligned_16)
-//{
-//    return sse_math::erfc_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
+/// =========================== SPECIAL FUNCTIONS =============================
+
+template <> bool avx2_specials::erf_avx2(double const *in_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::erf_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_specials::erf_avx2(float const *in_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::erf_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_specials::erfc_avx2(double const *in_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::erfc_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_specials::erfc_avx2(float const *in_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::erfc_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
 /// ============================ TRIG FUNCTIONS ===============================
 
 template <> bool avx2_basics::cos_avx2(double const *in_aligned_32, int size, double *out_aligned_32)

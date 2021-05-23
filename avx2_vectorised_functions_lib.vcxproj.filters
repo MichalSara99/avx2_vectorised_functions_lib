@@ -49,6 +49,9 @@
     <ClInclude Include="headers\hyp_funcs.h">
       <Filter>headers</Filter>
     </ClInclude>
+    <ClInclude Include="headers\special_funcs.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -92,6 +95,9 @@
     <MASM Include="asm_x86\tanh_funcs_.asm">
       <Filter>asm_x86</Filter>
     </MASM>
+    <MASM Include="asm_x86\erf_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <None Include="asm_x86_incs\exp_funcs.inc">
@@ -122,6 +128,9 @@
       <Filter>asm_x86_incs</Filter>
     </None>
     <None Include="asm_x86_incs\tanh_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\erf_funcs.inc">
       <Filter>asm_x86_incs</Filter>
     </None>
   </ItemGroup>
