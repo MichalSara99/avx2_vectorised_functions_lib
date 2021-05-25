@@ -11,6 +11,7 @@ Most of the functions are motivated by [Cephes](https://www.netlib.org/cephes/) 
 * asin, acos, atan (SPFP,DPFP)
 * cosh, sinh, tanh (SPFP,DPFP)
 * erf, erfc, expint (SPFP,DPFP)
+* pow2n (SPFP,DPFP)
 * other elementary functions coming up....
 
 ** SPFP = single-precision floating-point, DPFP = double-precision floating-point

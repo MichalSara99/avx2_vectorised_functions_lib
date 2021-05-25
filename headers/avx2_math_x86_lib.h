@@ -520,6 +520,29 @@ template <> AVX2_MATH_X86_API bool exp_avx2(double const *in_aligned_32, int siz
  */
 template <> AVX2_MATH_X86_API bool exp_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
 
+template <typename Type, typename IntType>
+bool pow2n_avx2(IntType const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point 2^n
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool pow2n_avx2(long long const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point 2^n
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool pow2n_avx2(int const *in_aligned_32, int size, float *out_aligned_32);
+
 template <typename Type> bool expm_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
 
 /**
@@ -979,6 +1002,26 @@ template <> AVX2_MATH_X86_API float *aligned_alloc<float>(std::size_t size, std:
 template <> AVX2_MATH_X86_API double *aligned_alloc<double>(std::size_t size, std::size_t alignment);
 
 /**
+ * Aligned allocation for 32-bit integer
+ *
+ * \param size
+ * \param alignment
+ * \return pointer to allocated aligned 32-bit integer memory
+ * block
+ */
+template <> AVX2_MATH_X86_API __int32 *aligned_alloc<__int32>(std::size_t size, std::size_t alignment);
+
+/**
+ * Aligned allocation for 64-bit integer
+ *
+ * \param size
+ * \param alignment
+ * \return pointer to allocated aligned 64-bit integer memory
+ * block
+ */
+template <> AVX2_MATH_X86_API __int64 *aligned_alloc<__int64>(std::size_t size, std::size_t alignment);
+
+/**
  * Aligned free for single-precision floating point memory block
  *
  * \param x
@@ -993,6 +1036,22 @@ template <> AVX2_MATH_X86_API void aligned_free(float *x);
  *
  */
 template <> AVX2_MATH_X86_API void aligned_free(double *x);
+
+/**
+ * Aligned free for 32-bit integer memory block
+ *
+ * \param x
+ *
+ */
+template <> AVX2_MATH_X86_API void aligned_free(__int32 *x);
+
+/**
+ * Aligned free for 64-bit integer memory block
+ *
+ * \param x
+ *
+ */
+template <> AVX2_MATH_X86_API void aligned_free(__int64 *x);
 
 } // namespace avx2_utility
 

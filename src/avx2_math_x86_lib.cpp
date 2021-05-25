@@ -229,6 +229,16 @@ template <> bool avx2_basics::expm_avx2(float const *in_aligned_32, int size, fl
     return avx2_math::expm_avx2_packed(in_aligned_32, size, out_aligned_32);
 }
 
+template <> bool avx2_basics::pow2n_avx2(long long const *in_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::pow2n_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::pow2n_avx2(int const *in_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::pow2n_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
 /// ========================= LOGARITHMIC FUNCTIONS ===========================
 
 template <> bool avx2_basics::log_avx2(float const *in_aligned_32, int size, float *out_aligned_32)
@@ -422,6 +432,16 @@ template <> double *avx2_utility::aligned_alloc<double>(std::size_t size, std::s
     return avx2_utilities::aligned_alloc<double>(size, alignment);
 }
 
+template <> __int32 *avx2_utility::aligned_alloc<__int32>(std::size_t size, std::size_t alignment)
+{
+    return avx2_utilities::aligned_alloc<__int32>(size, alignment);
+}
+
+template <> __int64 *avx2_utility::aligned_alloc<__int64>(std::size_t size, std::size_t alignment)
+{
+    return avx2_utilities::aligned_alloc<__int64>(size, alignment);
+}
+
 template <> void avx2_utility::aligned_free(float *x)
 {
     return avx2_utilities::aligned_free<float>(x);
@@ -430,4 +450,14 @@ template <> void avx2_utility::aligned_free(float *x)
 template <> void avx2_utility::aligned_free(double *x)
 {
     return avx2_utilities::aligned_free<double>(x);
+}
+
+template <> void avx2_utility::aligned_free(__int32 *x)
+{
+    return avx2_utilities::aligned_free<__int32>(x);
+}
+
+template <> void avx2_utility::aligned_free(__int64 *x)
+{
+    return avx2_utilities::aligned_free<__int64>(x);
 }
