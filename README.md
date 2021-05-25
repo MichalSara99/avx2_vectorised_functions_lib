@@ -6,7 +6,7 @@ Most of the functions are motivated by [Cephes](https://www.netlib.org/cephes/) 
 ## List of available functions
 * sin, cos (SPFP,DPFP)
 * tan, cot (SPFP,DPFP)
-* exp (SPFP,DPFP)
+* exp, expm (SPFP,DPFP)
 * natural log (SPFP,DPFP)
 * asin, acos, atan (SPFP,DPFP)
 * cosh, sinh, tanh (SPFP,DPFP)
