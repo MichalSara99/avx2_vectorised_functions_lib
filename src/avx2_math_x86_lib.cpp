@@ -219,6 +219,16 @@ template <> bool avx2_basics::exp_avx2(float const *in_aligned_32, int size, flo
     return avx2_math::exp_avx2_packed(in_aligned_32, size, out_aligned_32);
 }
 
+template <> bool avx2_basics::expm_avx2(double const *in_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::expm_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::expm_avx2(float const *in_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::expm_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
 /// ========================= LOGARITHMIC FUNCTIONS ===========================
 
 template <> bool avx2_basics::log_avx2(float const *in_aligned_32, int size, float *out_aligned_32)
