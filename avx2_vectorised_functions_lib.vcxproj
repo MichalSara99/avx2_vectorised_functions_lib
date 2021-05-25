@@ -42,6 +42,7 @@
     <MASM Include="asm_x86\atan_funcs_.asm" />
     <MASM Include="asm_x86\cosh_funcs_.asm" />
     <MASM Include="asm_x86\erf_funcs_.asm" />
+    <MASM Include="asm_x86\expint_funcs_.asm" />
     <MASM Include="asm_x86\expm_funcs_.asm" />
     <MASM Include="asm_x86\exp_funcs_.asm" />
     <MASM Include="asm_x86\log_funcs_.asm" />
@@ -56,6 +57,7 @@
     <None Include="asm_x86_incs\atan_funcs.inc" />
     <None Include="asm_x86_incs\cosh_funcs.inc" />
     <None Include="asm_x86_incs\erf_funcs.inc" />
+    <None Include="asm_x86_incs\expint_funcs.inc" />
     <None Include="asm_x86_incs\expm_funcs.inc" />
     <None Include="asm_x86_incs\exp_funcs.inc" />
     <None Include="asm_x86_incs\log_funcs.inc" />

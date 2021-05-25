@@ -298,6 +298,16 @@ template <> bool avx2_specials::erfc_avx2(float const *in_aligned_32, int size, 
     return avx2_math::erfc_avx2_packed(in_aligned_32, size, out_aligned_32);
 }
 
+template <> bool avx2_specials::expint_avx2(double const *in_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::expint_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_specials::expint_avx2(float const *in_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::expint_avx2_packed(in_aligned_32, size, out_aligned_32);
+}
+
 /// ============================ TRIG FUNCTIONS ===============================
 
 template <> bool avx2_basics::cos_avx2(double const *in_aligned_32, int size, double *out_aligned_32)

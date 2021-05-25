@@ -101,6 +101,9 @@
     <MASM Include="asm_x86\expm_funcs_.asm">
       <Filter>asm_x86</Filter>
     </MASM>
+    <MASM Include="asm_x86\expint_funcs_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <None Include="asm_x86_incs\exp_funcs.inc">
@@ -137,6 +140,9 @@
       <Filter>asm_x86_incs</Filter>
     </None>
     <None Include="asm_x86_incs\expm_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\expint_funcs.inc">
       <Filter>asm_x86_incs</Filter>
     </None>
   </ItemGroup>
