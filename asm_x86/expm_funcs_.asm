@@ -2,6 +2,23 @@ include asm_x86_incs/expm_funcs.inc
 
 .code
 ;;		extern "C" bool expm_avx2_ps(float const *in,int size,float *out);
+expm_avx2_macro_ps			macro
+							vcmpgeps ymm7,ymm0,ymm7							;; x_pos_maks = ymm7
+							vmovups ymm6,ymmword ptr [pos_sign_mask_d]
+							vandps ymm0,ymm0,ymm6							;; x = fabs(x) = ymm0 
+							vmovups ymm1,ymmword ptr [one_ps]
+							vmovups ymm2,ymmword ptr [expm_coef_ps]
+							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 32]
+							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 64]
+							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 96]
+							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 128]
+							vfmadd213ps	ymm2,ymm0,ymm1
+							vmulps ymm2,ymm2,ymm2
+							vmulps ymm2,ymm2,ymm2
+							vdivps ymm2,ymm1,ymm2
+							vblendvps ymm3,ymm6,ymm2,ymm7
+							endm
+
 expm_avx2_ps				proc uses ebx,
 									x_ptr:ptr real4,
 									n_arg:dword,
@@ -27,20 +44,9 @@ expm_avx2_ps				proc uses ebx,
 
 					@@:		vmovaps ymm0,ymmword ptr [ebx]
 							vxorps ymm7,ymm7,ymm7
-							vcmpgeps ymm7,ymm0,ymm7							;; x_pos_maks = ymm7
-							vmovups ymm6,ymmword ptr [pos_sign_mask_d]
-							vandps ymm0,ymm0,ymm6							;; x = fabs(x) = ymm0 
-							vmovups ymm1,ymmword ptr [one_ps]
-							vmovups ymm2,ymmword ptr [expm_coef_ps]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 32]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 64]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 96]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 128]
-							vfmadd213ps	ymm2,ymm0,ymm1
-							vmulps ymm2,ymm2,ymm2
-							vmulps ymm2,ymm2,ymm2
-							vdivps ymm2,ymm1,ymm2
-							vblendvps ymm3,ymm6,ymm2,ymm7
+							;; ====
+							expm_avx2_macro_ps
+							;; ====
 
 							vmovaps ymmword ptr[edx],ymm3
 							add ebx,32
@@ -56,20 +62,9 @@ expm_avx2_ps				proc uses ebx,
 
 							vmovaps ymm0,ymmword ptr [ebx]
 							vxorps ymm7,ymm7,ymm7
-							vcmpgeps ymm7,ymm0,ymm7							;; x_pos_maks = ymm7
-							vmovups ymm6,ymmword ptr [pos_sign_mask_d]
-							vandps ymm0,ymm0,ymm6							;; x = fabs(x) = ymm0 
-							vmovups ymm1,ymmword ptr [one_ps]
-							vmovups ymm2,ymmword ptr [expm_coef_ps]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 32]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 64]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 96]
-							vfmadd213ps	ymm2,ymm0,ymmword ptr [expm_coef_ps + 128]
-							vfmadd213ps	ymm2,ymm0,ymm1
-							vmulps ymm2,ymm2,ymm2
-							vmulps ymm2,ymm2,ymm2
-							vdivps ymm2,ymm1,ymm2
-							vblendvps ymm3,ymm6,ymm2,ymm7
+							;; ====
+							expm_avx2_macro_ps
+							;; ====
 
 							movaps xmm6,xmm3	
 							cmp ecx,4
@@ -100,10 +95,29 @@ expm_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 4],xmm2
 							movss real4 ptr [edx + 8],xmm4
 
-				done:		ret
+				done:		vzeroupper	
+							ret
 expm_avx2_ps				endp
 
 ;;		extern "C" bool expm_avx2_pd(double const *in,int size,double *out);
+expm_avx2_macro_pd			macro
+							vcmpgepd ymm7,ymm0,ymm7							;; x_pos_maks = ymm7
+							vmovupd ymm6,ymmword ptr [pos_sign_mask_q]
+							vandpd ymm0,ymm0,ymm6							;; x = fabs(x) = ymm0 
+							vmovupd ymm1,ymmword ptr [one_pd]
+							vmovupd ymm2,ymmword ptr [expm_coef_pd]
+							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 32]
+							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 64]
+							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 96]
+							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 128]
+							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 160]
+							vfmadd213pd	ymm2,ymm0,ymm1
+							vmulpd ymm2,ymm2,ymm2
+							vmulpd ymm2,ymm2,ymm2
+							vdivpd ymm2,ymm1,ymm2
+							vblendvpd ymm3,ymm6,ymm2,ymm7
+							endm
+
 expm_avx2_pd				proc uses ebx,
 									x_ptr:ptr real8,
 									n_arg:dword,
@@ -130,22 +144,9 @@ expm_avx2_pd				proc uses ebx,
 
 					@@:		vmovapd ymm0,ymmword ptr [ebx]
 							vxorpd ymm7,ymm7,ymm7
-							vcmpgepd ymm7,ymm0,ymm7							;; x_pos_maks = ymm7
-							vmovupd ymm6,ymmword ptr [pos_sign_mask_q]
-							vandpd ymm0,ymm0,ymm6							;; x = fabs(x) = ymm0 
-							vmovupd ymm1,ymmword ptr [one_pd]
-							vmovupd ymm2,ymmword ptr [expm_coef_pd]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 32]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 64]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 96]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 128]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 160]
-							vfmadd213pd	ymm2,ymm0,ymm1
-							vmulpd ymm2,ymm2,ymm2
-							vmulpd ymm2,ymm2,ymm2
-							vdivpd ymm2,ymm1,ymm2
-							vblendvpd ymm3,ymm6,ymm2,ymm7
-
+							;; =====
+							expm_avx2_macro_pd
+							;; =====
 							vmovapd ymmword ptr[edx],ymm3
 							add ebx,32
 							add edx,32
@@ -160,21 +161,9 @@ expm_avx2_pd				proc uses ebx,
 
 							vmovapd ymm0,ymmword ptr [ebx]
 							vxorpd ymm7,ymm7,ymm7
-							vcmpgepd ymm7,ymm0,ymm7							;; x_pos_maks = ymm7
-							vmovupd ymm6,ymmword ptr [pos_sign_mask_q]
-							vandpd ymm0,ymm0,ymm6							;; x = fabs(x) = ymm0 
-							vmovupd ymm1,ymmword ptr [one_pd]
-							vmovupd ymm2,ymmword ptr [expm_coef_pd]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 32]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 64]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 96]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 128]
-							vfmadd213pd	ymm2,ymm0,ymmword ptr [expm_coef_pd + 160]
-							vfmadd213pd	ymm2,ymm0,ymm1
-							vmulpd ymm2,ymm2,ymm2
-							vmulpd ymm2,ymm2,ymm2
-							vdivpd ymm2,ymm1,ymm2
-							vblendvpd ymm3,ymm6,ymm2,ymm7
+							;; =====
+							expm_avx2_macro_pd
+							;; =====
 
 							cmp ecx,1
 							je short one_left
@@ -195,7 +184,8 @@ expm_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 8],xmm2
 							vmovsd real8 ptr [edx + 16],xmm6
 
-				done:		ret
+				done:		vzeroupper
+							ret
 expm_avx2_pd				endp
 							end
 

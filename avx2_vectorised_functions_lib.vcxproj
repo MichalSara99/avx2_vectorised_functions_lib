@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="basic_operations.h" />
     <ClInclude Include="headers\avx2_math_x86.h" />
     <ClInclude Include="headers\avx2_math_x86_lib.h" />
     <ClInclude Include="headers\avx2_utilities.h" />
@@ -51,11 +52,13 @@
     <MASM Include="asm_x86\sinh_funcs_.asm" />
     <MASM Include="asm_x86\tancot_funcs_.asm" />
     <MASM Include="asm_x86\tanh_funcs_.asm" />
+    <MASM Include="basic_operations_.asm" />
   </ItemGroup>
   <ItemGroup>
     <None Include="asm_x86_incs\acos_funcs.inc" />
     <None Include="asm_x86_incs\asin_funcs.inc" />
     <None Include="asm_x86_incs\atan_funcs.inc" />
+    <None Include="asm_x86_incs\basic_operations.inc" />
     <None Include="asm_x86_incs\cosh_funcs.inc" />
     <None Include="asm_x86_incs\erf_funcs.inc" />
     <None Include="asm_x86_incs\expint_funcs.inc" />

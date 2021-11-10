@@ -66,7 +66,8 @@ pow2n_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm5
 
 
-			done:			ret
+			done:			vzeroupper
+							ret
 pow2n_avx2_pd				endp
 
 ;;		extern "C" bool pow2n_avx2_ps(int const *in,int size,float *out);
@@ -144,6 +145,7 @@ pow2n_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 4],xmm2
 							movss real4 ptr [edx + 8],xmm4
 
-				done:		ret
+				done:		vzeroupper
+							ret
 pow2n_avx2_ps				endp
 							end

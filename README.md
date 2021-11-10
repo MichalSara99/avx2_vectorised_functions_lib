@@ -12,6 +12,7 @@ Most of the functions are motivated by [Cephes](https://www.netlib.org/cephes/) 
 * cosh, sinh, tanh (SPFP,DPFP)
 * erf, erfc, expint (SPFP,DPFP)
 * pow2n (SPFP,DPFP)
+* basic math operation (add,sub,mul,div,plus broadcast versions of these...)
 * other elementary functions coming up....
 
 ** SPFP = single-precision floating-point, DPFP = double-precision floating-point

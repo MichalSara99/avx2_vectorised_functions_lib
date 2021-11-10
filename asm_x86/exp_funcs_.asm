@@ -2,6 +2,34 @@ include asm_x86_incs/exp_funcs.inc
 
 .code
 ;;		extern "C" bool exp_avx2_pd(double const* x, int n, double* out);
+exp_avx2_macro_pd			macro
+							;; this could be macro:
+							vsubpd xmm3,xmm3 ,xmmword ptr [opfournine_pd]
+							vaddpd xmm3,xmm3,xmmword ptr [long_real]	
+							vpsubq xmm3,xmm3,xmmword ptr [long_real]
+							vsubpd xmm4,xmm4,xmmword ptr [opfournine_pd]
+							vaddpd xmm4,xmm4,xmmword ptr [long_real]								;; k_l = xmm3
+							vpsubq xmm4,xmm4,xmmword ptr [long_real]								;; k_h = xmm4
+							
+							vroundpd ymm1,ymm1,00000001b											;; p = ymm1
+							vmulpd ymm2,ymm1,ymmword ptr [c1_pd]									;; a = ymm2
+							vsubpd ymm0,ymm0,ymm2													;; x = ymm0
+							vmulpd ymm2,ymm1,ymmword ptr [c2_pd]									;; a = ymm2
+							vsubpd ymm0,ymm0,ymm2													;; x = ymm0							
+							vmulpd ymm2,ymm0,ymmword ptr [m_ecoef_pd]
+							vaddpd ymm2,ymm2,ymmword ptr [m_ecoef_pd + 32]							;; a = ymm2
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 64]	
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 96]						;; a = ymm2
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 128]	
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 160]						;; a = ymm2
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 192]	
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 224]						;; a = ymm2
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 256]	
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 288]						;; a = ymm2
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 320]	
+							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 352]						;; a = ymm2
+							endm
+
 exp_avx2_pd					proc uses ebx,
 									x_ptr:ptr real8,
 									n_arg:dword,
@@ -37,33 +65,9 @@ exp_avx2_pd					proc uses ebx,
 							vsubpd ymm1,ymm1,ymm2													;; a = ymm1
 							vextractf128 xmm3,ymm1,0												;; a_l = xmm3
 							vextractf128 xmm4,ymm1,1												;; a_h = xmm4	
-							;; this could be macro:
-							vsubpd xmm3,xmm3 ,xmmword ptr [opfournine_pd]
-							vaddpd xmm3,xmm3,xmmword ptr [long_real]	
-							vpsubq xmm3,xmm3,xmmword ptr [long_real]
-							vsubpd xmm4,xmm4,xmmword ptr [opfournine_pd]
-							vaddpd xmm4,xmm4,xmmword ptr [long_real]								;; k_l = xmm3
-							vpsubq xmm4,xmm4,xmmword ptr [long_real]								;; k_h = xmm4
-							
-							vroundpd ymm1,ymm1,00000001b											;; p = ymm1
-
-							vmulpd ymm2,ymm1,ymmword ptr [c1_pd]									;; a = ymm2
-							vsubpd ymm0,ymm0,ymm2													;; x = ymm0
-							vmulpd ymm2,ymm1,ymmword ptr [c2_pd]									;; a = ymm2
-							vsubpd ymm0,ymm0,ymm2													;; x = ymm0							
-							vmulpd ymm2,ymm0,ymmword ptr [m_ecoef_pd]
-							vaddpd ymm2,ymm2,ymmword ptr [m_ecoef_pd + 32]							;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 64]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 96]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 128]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 160]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 192]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 224]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 256]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 288]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 320]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 352]						;; a = ymm2
-
+							;; =====
+							exp_avx2_macro_pd
+							;; =====
 							;; p = 2^k
 							vpaddq xmm3,xmm3, xmmword ptr [int_tentwothree] 
 							vpaddq xmm4,xmm4, xmmword ptr [int_tentwothree]
@@ -91,33 +95,10 @@ exp_avx2_pd					proc uses ebx,
 							vandpd ymm2,ymm2,ymmword ptr [one_pd]									;; p = ymm2
 							vsubpd ymm1,ymm1,ymm2													;; a = ymm1
 							vextractf128 xmm3,ymm1,0												;; a_l = xmm3
-							vextractf128 xmm4,ymm1,1												;; a_h = xmm4	
-							;; this could be macro:
-							vsubpd xmm3,xmm3 ,xmmword ptr [opfournine_pd]
-							vaddpd xmm3,xmm3,xmmword ptr [long_real]	
-							vpsubq xmm3,xmm3,xmmword ptr [long_real]
-							vsubpd xmm4,xmm4,xmmword ptr [opfournine_pd]
-							vaddpd xmm4,xmm4,xmmword ptr [long_real]								;; k_l = xmm3
-							vpsubq xmm4,xmm4,xmmword ptr [long_real]								;; k_h = xmm4
-							
-							vroundpd ymm1,ymm1,00000001b											;; p = ymm1
-							vmulpd ymm2,ymm1,ymmword ptr [c1_pd]									;; a = ymm2
-							vsubpd ymm0,ymm0,ymm2													;; x = ymm0
-							vmulpd ymm2,ymm1,ymmword ptr [c2_pd]									;; a = ymm2
-							vsubpd ymm0,ymm0,ymm2													;; x = ymm0							
-							vmulpd ymm2,ymm0,ymmword ptr [m_ecoef_pd]
-							vaddpd ymm2,ymm2,ymmword ptr [m_ecoef_pd + 32]							;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 64]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 96]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 128]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 160]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 192]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 224]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 256]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 288]						;; a = ymm2
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 320]	
-							vfmadd213pd ymm2,ymm0,ymmword ptr [m_ecoef_pd + 352]						;; a = ymm2
-
+							vextractf128 xmm4,ymm1,1												;; a_h = xmm4
+							;; =====
+							exp_avx2_macro_pd
+							;; =====
 							;; p = 2^k
 							vpaddq xmm3,xmm3, xmmword ptr [int_tentwothree] 
 							vpaddq xmm4,xmm4, xmmword ptr [int_tentwothree]
@@ -144,11 +125,35 @@ exp_avx2_pd					proc uses ebx,
 							vmovsd real8 ptr [edx + 8],xmm2
 							vmovsd real8 ptr [edx + 16],xmm6
 
-				done:		ret
+				done:		vzeroupper
+							ret
 exp_avx2_pd					endp
 
 
 ;;		extern "C" bool exp_avx2_ps(float const* x, int n, float* out);
+exp_avx2_macro_ps			macro
+							vmulps ymm1,ymm1,ymm0							
+							vaddps ymm1,ymm1,ymmword ptr [zero_point_five]  ;; fx = ymm1
+							vmovaps ymm2,ymm1								;; tmp = ymm2
+							vroundps ymm2,ymm2,00000001b					;; tmp = ymm2
+							vcmpgtps ymm3,ymm2,ymm1							;; mask = ymm3
+							vandps ymm3,ymm3,ymmword ptr [one_ps]
+							vsubps ymm1,ymm2,ymm3
+							vmulps ymm2,ymm1,ymmword ptr [c1_ps]			;; tmp = ymm2
+							vmulps ymm3,ymm1,ymmword ptr [c2_ps]			;; z = ymm3
+							vsubps ymm0,ymm0,ymm2							;; x = ymm0
+							vsubps ymm0,ymm0,ymm3							;; x = ymm0
+							vmulps ymm3,ymm0,ymm0							;; z = ymm3
+							vmovups ymm2,ymmword ptr [m_ecoef_ps]			;; y = ymm2
+							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 32]
+							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 64]
+							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 96]
+							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 128]
+							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 160]
+							vfmadd213ps ymm2,ymm3,ymm0
+							vaddps ymm2,ymm2,ymmword ptr [one_ps]
+							endm
+
 exp_avx2_ps					proc uses ebx,
 									x_ptr:ptr real4,
 									n_arg:dword,
@@ -177,27 +182,9 @@ exp_avx2_ps					proc uses ebx,
 							vminps ymm0,ymm0,ymmword ptr [exp_hi_ps]
 							vmaxps ymm0,ymm0,ymmword ptr [exp_lo_ps]
 							vmovups ymm1,ymmword ptr [log2e_ps]
-							vmulps ymm1,ymm1,ymm0							
-							vaddps ymm1,ymm1,ymmword ptr [zero_point_five]  ;; fx = ymm1
-							vmovaps ymm2,ymm1								;; tmp = ymm2
-							vroundps ymm2,ymm2,00000001b					;; tmp = ymm2
-							vcmpgtps ymm3,ymm2,ymm1							;; mask = ymm3
-							vandps ymm3,ymm3,ymmword ptr [one_ps]
-							vsubps ymm1,ymm2,ymm3
-							vmulps ymm2,ymm1,ymmword ptr [c1_ps]			;; tmp = ymm2
-							vmulps ymm3,ymm1,ymmword ptr [c2_ps]			;; z = ymm3
-							vsubps ymm0,ymm0,ymm2							;; x = ymm0
-							vsubps ymm0,ymm0,ymm3							;; x = ymm0
-							vmulps ymm3,ymm0,ymm0							;; z = ymm3
-							vmovups ymm2,ymmword ptr [m_ecoef_ps]			;; y = ymm2
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 32]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 64]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 96]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 128]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 160]
-							vfmadd213ps ymm2,ymm3,ymm0
-							vaddps ymm2,ymm2,ymmword ptr [one_ps]
-							
+							;; ======
+							exp_avx2_macro_ps
+							;; ======
 							;; p = 2^k
 							vcvttps2dq ymm0,ymm1
 							vpaddd ymm0,ymm0,ymmword ptr [int_onetwoseven]
@@ -219,27 +206,9 @@ exp_avx2_ps					proc uses ebx,
 							vminps ymm0,ymm0,ymmword ptr [exp_hi_ps]
 							vmaxps ymm0,ymm0,ymmword ptr [exp_lo_ps]
 							vmovups ymm1,ymmword ptr [log2e_ps]
-							vmulps ymm1,ymm1,ymm0							
-							vaddps ymm1,ymm1,ymmword ptr [zero_point_five]  ;; fx = ymm1
-							vmovaps ymm2,ymm1								;; tmp = ymm2
-							vroundps ymm2,ymm2,00000001b					;; tmp = ymm2
-							vcmpgtps ymm3,ymm2,ymm1							;; mask = ymm3
-							vandps ymm3,ymm3,ymmword ptr [one_ps]
-							vsubps ymm1,ymm2,ymm3
-							vmulps ymm2,ymm1,ymmword ptr [c1_ps]			;; tmp = ymm2
-							vmulps ymm3,ymm1,ymmword ptr [c2_ps]			;; z = ymm3
-							vsubps ymm0,ymm0,ymm2							;; x = ymm0
-							vsubps ymm0,ymm0,ymm3							;; x = ymm0
-							vmulps ymm3,ymm0,ymm0							;; z = ymm3
-							vmovups ymm2,ymmword ptr [m_ecoef_ps]			;; y = ymm2
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 32]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 64]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 96]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 128]
-							vfmadd213ps ymm2,ymm0,ymmword ptr [m_ecoef_ps + 160]
-							vfmadd213ps ymm2,ymm3,ymm0
-							vaddps ymm2,ymm2,ymmword ptr [one_ps]
-							
+							;; ======
+							exp_avx2_macro_ps
+							;; ======
 							;; p = 2^k
 							vcvttps2dq ymm0,ymm1
 							vpaddd ymm0,ymm0,ymmword ptr [int_onetwoseven]
@@ -275,6 +244,7 @@ exp_avx2_ps					proc uses ebx,
 							movss real4 ptr [edx + 4],xmm2
 							movss real4 ptr [edx + 8],xmm4
 
-				done:		ret
+				done:		vzeroupper
+							ret
 exp_avx2_ps					endp
 							end

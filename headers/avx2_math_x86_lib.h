@@ -48,324 +48,320 @@ template <> AVX2_MATH_X86_API const float pi();
 namespace avx2_basics
 {
 
-///// basic operations:
-/////
-// template <typename Type> bool mul_br_sse(Type const *x_aligned_16, Type const y, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point broadcast multiplication
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool mul_br_sse(double const *x_aligned_16, double const y, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point broadcast multiplication
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool mul_br_sse(float const *x_aligned_16, float const y, int size, float *out_aligned_16);
-//
-// template <typename Type>
-// bool mul_sse(Type const *x_aligned_16, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point multiplication
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool mul_sse(double const *x_aligned_16, double const *y_aligned_16, int size,
-//                               double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point multiplication
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool mul_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float
-// *out_aligned_16);
-//
-// template <typename Type> bool div_br_sse(Type const *x_aligned_16, Type const y, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point broadcast division
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool div_br_sse(double const *x_aligned_16, double const y, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point broadcast division
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool div_br_sse(float const *x_aligned_16, float const y, int size, float *out_aligned_16);
-//
-// template <typename Type> bool div_br_s_sse(Type const x, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point broadcast division
-// *
-// * \param x
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool div_br_s_sse(double const x, double const *y_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point broadcast division
-// *
-// * \param x
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool div_br_s_sse(float const x, float const *y_aligned_16, int size, float *out_aligned_16);
-//
-// template <typename Type>
-// bool div_sse(Type const *x_aligned_16, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point division
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool div_sse(double const *x_aligned_16, double const *y_aligned_16, int size,
-//                               double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point division
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool div_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float
-// *out_aligned_16);
-//
-// template <typename Type> bool add_br_sse(Type const *x_aligned_16, Type const y, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point broadcast addition
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool add_br_sse(double const *x_aligned_16, double const y, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point broadcast addition
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool add_br_sse(float const *x_aligned_16, float const y, int size, float *out_aligned_16);
-//
-// template <typename Type>
-// bool add_sse(Type const *x_aligned_16, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point addition
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool add_sse(double const *x_aligned_16, double const *y_aligned_16, int size,
-//                               double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point addition
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool add_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float
-// *out_aligned_16);
-//
-// template <typename Type> bool sub_br_sse(Type const *x_aligned_16, Type const y, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point broadcast subtraction
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool sub_br_sse(double const *x_aligned_16, double const y, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point broadcast subtraction
-// *
-// * \param x_aligned_16
-// * \param y
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool sub_br_sse(float const *x_aligned_16, float const y, int size, float *out_aligned_16);
-//
-// template <typename Type> bool sub_br_s_sse(Type const x, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point broadcast subtraction
-// *
-// * \param x
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool sub_br_s_sse(double const x, double const *y_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point broadcast subtraction
-// *
-// * \param x
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool sub_br_s_sse(float const x, float const *y_aligned_16, int size, float *out_aligned_16);
-//
-// template <typename Type>
-// bool sub_sse(Type const *x_aligned_16, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point subtraction
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool sub_sse(double const *x_aligned_16, double const *y_aligned_16, int size,
-//                               double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point subtraction
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool sub_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float
-// *out_aligned_16);
-//
-// template <typename Type> bool neg_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point negative value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool neg_sse(double const *in_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point negative value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool neg_sse(float const *in_aligned_16, int size, float *out_aligned_16);
-//
-// template <typename Type> bool inv_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point inverse(=inverted) value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool inv_sse(double const *in_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point inverse(=inverted) value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool inv_sse(float const *in_aligned_16, int size, float *out_aligned_16);
-//
+/// basic operations:
+
+template <typename Type> bool mul_broad_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point broadcast multiplication
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool mul_broad_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point broadcast multiplication
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool mul_broad_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+
+template <typename Type>
+bool mul_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point multiplication
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool mul_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
+                                double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point multiplication
+ *
+ * \param x_aligned_16
+ * \param y_aligned_16
+ * \param size
+ * \param out_aligned_16
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool mul_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool div_broad_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point broadcast division
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool div_broad_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point broadcast division
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool div_broad_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+
+template <typename Type> bool div_broad_avx2(Type const x, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point broadcast division
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool div_broad_avx2(double const x, double const *y_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point broadcast division
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool div_broad_avx2(float const x, float const *y_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type>
+bool div_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point division
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool div_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
+                                double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point division
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool div_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool add_broad_avx2(Type const *x_aligned_16, Type const y, int size, Type *out_aligned_16);
+
+/**
+ * Packed double-precision floating-point broadcast addition
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool add_broad_avx2(double const *x_aligned_16, double const y, int size, double *out_aligned_16);
+
+/**
+ * Packed single-precision floating-point broadcast addition
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool add_broad_avx2(float const *x_aligned_16, float const y, int size, float *out_aligned_16);
+
+template <typename Type>
+bool add_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point addition
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool add_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
+                                double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point addition
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool add_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool sub_broad_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point broadcast subtraction
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool sub_broad_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point broadcast subtraction
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool sub_broad_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+
+template <typename Type> bool sub_broad_avx2(Type const x, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point broadcast subtraction
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool sub_broad_avx2(double const x, double const *y_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point broadcast subtraction
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool sub_broad_avx2(float const x, float const *y_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type>
+bool sub_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point subtraction
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool sub_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
+                                double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point subtraction
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool sub_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool neg_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point negative value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool neg_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point negative value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool neg_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool inv_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point inverse(=inverted) value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool inv_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point inverse(=inverted) value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool inv_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+
 ///// basic functions:
 //
 // template <typename Type> bool abs_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);

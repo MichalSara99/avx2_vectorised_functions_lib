@@ -3,7 +3,7 @@
 #define _AVX2_MATH_X86
 
 //#include "basic_functions.h"
-//#include "basic_operations.h"
+#include "basic_operations.h"
 #include "exp_funcs.h"
 #include "log_funcs.h"
 #include "math_constants.h"

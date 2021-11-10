@@ -52,6 +52,9 @@
     <ClInclude Include="headers\special_funcs.h">
       <Filter>headers</Filter>
     </ClInclude>
+    <ClInclude Include="basic_operations.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -107,6 +110,9 @@
     <MASM Include="asm_x86\pow2n_funcs_.asm">
       <Filter>asm_x86</Filter>
     </MASM>
+    <MASM Include="basic_operations_.asm">
+      <Filter>asm_x86</Filter>
+    </MASM>
   </ItemGroup>
   <ItemGroup>
     <None Include="asm_x86_incs\exp_funcs.inc">
@@ -149,6 +155,9 @@
       <Filter>asm_x86_incs</Filter>
     </None>
     <None Include="asm_x86_incs\pow2n_funcs.inc">
+      <Filter>asm_x86_incs</Filter>
+    </None>
+    <None Include="asm_x86_incs\basic_operations.inc">
       <Filter>asm_x86_incs</Filter>
     </None>
   </ItemGroup>
