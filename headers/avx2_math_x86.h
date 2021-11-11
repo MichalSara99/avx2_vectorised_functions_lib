@@ -2,7 +2,7 @@
 #if !defined(_AVX2_MATH_X86)
 #define _AVX2_MATH_X86
 
-//#include "basic_functions.h"
+#include "basic_funcs.h"
 #include "basic_operations.h"
 #include "exp_funcs.h"
 #include "log_funcs.h"

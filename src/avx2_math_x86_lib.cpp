@@ -132,80 +132,100 @@ bool avx2_basics::sub_avx2(float const *x_aligned_32, float const *y_aligned_32,
     return avx2_math::sub_avx2_packed(x_aligned_32, y_aligned_32, size, out_aligned_32);
 }
 
-template <> bool avx2_basics::neg_avx2(double const *in_aligned_16, int size, double *out_aligned_16)
+template <> bool avx2_basics::neg_avx2(double const *x_aligned_32, int size, double *out_aligned_32)
 {
-    return avx2_math::neg_avx2_packed(in_aligned_16, size, out_aligned_16);
+    return avx2_math::neg_avx2_packed(x_aligned_32, size, out_aligned_32);
 }
 
-template <> bool avx2_basics::neg_avx2(float const *in_aligned_16, int size, float *out_aligned_16)
+template <> bool avx2_basics::neg_avx2(float const *x_aligned_32, int size, float *out_aligned_32)
 {
-    return avx2_math::neg_avx2_packed(in_aligned_16, size, out_aligned_16);
+    return avx2_math::neg_avx2_packed(x_aligned_32, size, out_aligned_32);
 }
 
-template <> bool avx2_basics::inv_avx2(double const *in_aligned_16, int size, double *out_aligned_16)
+template <> bool avx2_basics::inv_avx2(double const *x_aligned_32, int size, double *out_aligned_32)
 {
-    return avx2_math::inv_avx2_packed(in_aligned_16, size, out_aligned_16);
+    return avx2_math::inv_avx2_packed(x_aligned_32, size, out_aligned_32);
 }
 
-template <> bool avx2_basics::inv_avx2(float const *in_aligned_16, int size, float *out_aligned_16)
+template <> bool avx2_basics::inv_avx2(float const *x_aligned_32, int size, float *out_aligned_32)
 {
-    return avx2_math::inv_avx2_packed(in_aligned_16, size, out_aligned_16);
+    return avx2_math::inv_avx2_packed(x_aligned_32, size, out_aligned_32);
 }
 
 ///// =========================== BASIC FUNCTIONS ================================
-// template <> bool avx2_basics::abs_sse(double const *in_aligned_16, int size, double *out_aligned_16)
-//{
-//    return sse_math::abs_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_basics::abs_sse(float const *in_aligned_16, int size, float *out_aligned_16)
-//{
-//    return sse_math::abs_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_basics::sqrt_sse(double const *in_aligned_16, int size, double *out_aligned_16)
-//{
-//    return sse_math::sqrt_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_basics::sqrt_sse(float const *in_aligned_16, int size, float *out_aligned_16)
-//{
-//    return sse_math::sqrt_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_basics::sqrpow_sse(double const *in_aligned_16, int size, double *out_aligned_16)
-//{
-//    return sse_math::sqrpow_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <> bool avx2_basics::sqrpow_sse(float const *in_aligned_16, int size, float *out_aligned_16)
-//{
-//    return sse_math::sqrpow_sse_packed(in_aligned_16, size, out_aligned_16);
-//}
-//
-// template <>
-// bool avx2_basics::mins_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float *out_aligned_16)
-//{
-//    return sse_math::mins_sse_packed(x_aligned_16, y_aligned_16, size, out_aligned_16);
-//}
-//
-// template <>
-// bool avx2_basics::mins_sse(double const *x_aligned_16, double const *y_aligned_16, int size, double *out_aligned_16)
-//{
-//    return sse_math::mins_sse_packed(x_aligned_16, y_aligned_16, size, out_aligned_16);
-//}
-//
-// template <>
-// bool avx2_basics::maxs_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float *out_aligned_16)
-//{
-//    return sse_math::maxs_sse_packed(x_aligned_16, y_aligned_16, size, out_aligned_16);
-//}
-//
-// template <>
-// bool avx2_basics::maxs_sse(double const *x_aligned_16, double const *y_aligned_16, int size, double *out_aligned_16)
-//{
-//    return sse_math::maxs_sse_packed(x_aligned_16, y_aligned_16, size, out_aligned_16);
-//}
+template <> bool avx2_basics::abs_avx2(double const *x_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::abs_avx2_packed(x_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::abs_avx2(float const *x_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::abs_avx2_packed(x_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::sqrt_avx2(double const *x_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::sqrt_avx2_packed(x_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::sqrt_avx2(float const *x_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::sqrt_avx2_packed(x_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::sqrp_avx2(double const *x_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::sqrp_avx2_packed(x_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::sqrp_avx2(float const *x_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::sqrp_avx2_packed(x_aligned_32, size, out_aligned_32);
+}
+
+template <>
+bool avx2_basics::min_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::min_avx2_packed(x_aligned_32, y_aligned_32, size, out_aligned_32);
+}
+
+template <>
+bool avx2_basics::min_avx2(double const *x_aligned_32, double const *y_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::min_avx2_packed(x_aligned_32, y_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::min_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32)
+{
+    return avx2_math::min_avx2_packed(x_aligned_32, y, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::min_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32)
+{
+    return avx2_math::min_avx2_packed(x_aligned_32, y, size, out_aligned_32);
+}
+
+template <>
+bool avx2_basics::max_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32)
+{
+    return avx2_math::max_avx2_packed(x_aligned_32, y_aligned_32, size, out_aligned_32);
+}
+
+template <>
+bool avx2_basics::max_avx2(double const *x_aligned_32, double const *y_aligned_32, int size, double *out_aligned_32)
+{
+    return avx2_math::max_avx2_packed(x_aligned_32, y_aligned_32, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::max_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32)
+{
+    return avx2_math::max_avx2_packed(x_aligned_32, y, size, out_aligned_32);
+}
+
+template <> bool avx2_basics::max_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32)
+{
+    return avx2_math::max_avx2_packed(x_aligned_32, y, size, out_aligned_32);
+}
 
 /// ======================== EXPONENTIAL FUNCTIONS ============================
 

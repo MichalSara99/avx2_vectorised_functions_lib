@@ -363,135 +363,187 @@ template <> AVX2_MATH_X86_API bool inv_avx2(double const *in_aligned_32, int siz
 template <> AVX2_MATH_X86_API bool inv_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
 
 ///// basic functions:
-//
-// template <typename Type> bool abs_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point absolute value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool abs_sse(double const *in_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point absolute value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool abs_sse(float const *in_aligned_16, int size, float *out_aligned_16);
-//
-// template <typename Type> bool sqrt_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point square root value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool sqrt_sse(double const *in_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * packed single-precision floating-point square root value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool sqrt_sse(float const *in_aligned_16, int size, float *out_aligned_16);
-//
-// template <typename Type> bool sqrpow_sse(Type const *in_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point square power value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool sqrpow_sse(double const *in_aligned_16, int size, double *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point square power value
-// *
-// * \param in_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <> AVX2_MATH_X86_API bool sqrpow_sse(float const *in_aligned_16, int size, float *out_aligned_16);
-//
-// template <typename Type>
-// bool mins_sse(Type const *x_aligned_16, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point minimum values from a pair of
-// * allocated aligned memory blocks
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool mins_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float
-// *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point minimum values from a pair of
-// * allocated aligned memory blocks
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool mins_sse(double const *x_aligned_16, double const *y_aligned_16, int size,
-//                                double *out_aligned_16);
-//
-// template <typename Type>
-// bool maxs_sse(Type const *x_aligned_16, Type const *y_aligned_16, int size, Type *out_aligned_16);
-//
-///**
-// * Packed single-precision floating-point maximum values from a pair of
-// * allocated aligned memory blocks
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool maxs_sse(float const *x_aligned_16, float const *y_aligned_16, int size, float
-// *out_aligned_16);
-//
-///**
-// * Packed double-precision floating-point maximum values from a pair of
-// * allocated aligned memory blocks
-// *
-// * \param x_aligned_16
-// * \param y_aligned_16
-// * \param size
-// * \param out_aligned_16
-// * \return boolean indicating success or failure
-// */
-// template <>
-// AVX2_MATH_X86_API bool maxs_sse(double const *x_aligned_16, double const *y_aligned_16, int size,
-//                                double *out_aligned_16);
-//
+
+template <typename Type> bool abs_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point absolute value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool abs_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point absolute value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool abs_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool sqrt_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point square root value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool sqrt_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * packed single-precision floating-point square root value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool sqrt_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type> bool sqrp_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point square power value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool sqrp_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point square power value
+ *
+ * \param in_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool sqrp_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+
+template <typename Type>
+bool min_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point minimum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool min_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point minimum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool min_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
+                                double *out_aligned_32);
+
+template <typename Type> bool min_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point minimum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool min_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point minimum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool min_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+
+template <typename Type>
+bool max_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point maximum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool max_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point maximum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool max_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
+                                double *out_aligned_32);
+
+template <typename Type> bool max_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+
+/**
+ * Packed single-precision floating-point maximum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <> AVX2_MATH_X86_API bool max_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+
+/**
+ * Packed double-precision floating-point maximum values from a pair of
+ * allocated aligned memory blocks
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool max_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+
 ///// exponential functions:
 
 template <typename Type> bool exp_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
