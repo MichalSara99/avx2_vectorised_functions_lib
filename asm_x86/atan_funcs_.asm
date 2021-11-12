@@ -1,7 +1,6 @@
 include asm_x86_incs/atan_funcs.inc
 
 .code
-;;		extern "C" bool atan_avx2_ps(float const* x, int n, float* out);
 atan_avx2_macro_ps			macro
 							vcmpltps ymm2,ymm0,ymm7								;; sign2 = ymm2
 							vcmpgtps ymm3,ymm1,ymmword ptr [tan_vals_ps + 32]	;; ymm3 = suptan3pi8
@@ -28,30 +27,30 @@ atan_avx2_macro_ps			macro
 							vfmadd213ps ymm0,ymm1,ymm1
 							vaddps ymm7,ymm7,ymm0
 							endm
-
-atan_avx2_ps				proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4			
+;;										ecx,			edx
+;; 		extern "C" bool atan_avx2_ps(float const* x, float* out,int n);
+atan_avx2_ps@@12			proc near
+								n_arg	textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 								
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
-				@@:			vmovaps ymm0,ymmword ptr [ebx]						;; xx = ymm0
+				@@:			vmovaps ymm0,ymmword ptr [ecx]						;; xx = ymm0
 							vmovaps ymm1,ymm0								
 							vandps ymm1,ymm1,ymmword ptr [pos_sign_mask_d]		;; x = ymm1
 							vxorps ymm7,ymm7,ymm7
@@ -62,18 +61,18 @@ atan_avx2_ps				proc uses ebx,
 							vblendvps ymm7,ymm7,ymm6,ymm2
 
 							vmovapd ymmword ptr [edx],ymm7
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovaps ymm0,ymmword ptr [ebx]						;; xx = ymm0
+							vmovaps ymm0,ymmword ptr [ecx]						;; xx = ymm0
 							vmovaps ymm1,ymm0								
 							vandps ymm1,ymm1,ymmword ptr [pos_sign_mask_d]		;; x = ymm1
 							vxorps ymm7,ymm7,ymm7
@@ -84,20 +83,20 @@ atan_avx2_ps				proc uses ebx,
 							vblendvps ymm7,ymm7,ymm6,ymm2
 
 							movaps xmm6,xmm7	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm7,1 
 							movaps xmmword ptr [edx],xmm7
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
 
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -113,10 +112,12 @@ atan_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 
 			done:			vzeroupper	
-							ret
-atan_avx2_ps				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+atan_avx2_ps@@12			endp
 
-;;		extern "C" bool atan_avx2_pd(double const* x, int n, double* out);
 atan_avx2_macro_pd			macro
 							vcmpltpd ymm2,ymm0,ymm7								;; sign2 = ymm2
 							vcmpgtpd ymm3,ymm1,ymmword ptr [tan_3pi_o_8_pd]		;; ymm3 = suptan3pi8
@@ -167,29 +168,30 @@ atan_avx2_macro_pd			macro
 							vaddpd ymm7,ymm7,ymm4
 							endm
 
-atan_avx2_pd				proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8		
+;;										ecx,			edx,
+;;		extern "C" bool atan_avx2_pd(double const* x,double* out, int n);
+atan_avx2_pd@@12			proc near	
+								n_arg	textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 								
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
-				@@:			vmovapd ymm0,ymmword ptr [ebx]						;; xx = ymm0
+				@@:			vmovapd ymm0,ymmword ptr [ecx]						;; xx = ymm0
 							vmovapd ymm1,ymm0								
 							vandpd ymm1,ymm1,ymmword ptr [pos_sign_mask_q]		;; x = ymm1
 							vxorpd ymm7,ymm7,ymm7
@@ -203,18 +205,18 @@ atan_avx2_pd				proc uses ebx,
 							vblendvps ymm7,ymm7,ymm0,ymm4
 
 							vmovapd ymmword ptr [edx],ymm7
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovapd ymm0,ymmword ptr [ebx]						;; xx = ymm0
+							vmovapd ymm0,ymmword ptr [ecx]						;; xx = ymm0
 							vmovapd ymm1,ymm0								
 							vandpd ymm1,ymm1,ymmword ptr [pos_sign_mask_q]		;; x = ymm1
 							vxorpd ymm7,ymm7,ymm7
@@ -227,11 +229,11 @@ atan_avx2_pd				proc uses ebx,
 							vcmpeqpd ymm4,ymm1,ymm4
 							vblendvps ymm7,ymm7,ymm0,ymm4
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm7   
@@ -247,7 +249,10 @@ atan_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm6
 
 			done:			vzeroupper
-							ret
-atan_avx2_pd				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+atan_avx2_pd@@12			endp
 							end
 

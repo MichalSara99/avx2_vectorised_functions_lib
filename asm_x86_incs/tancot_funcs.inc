@@ -1,4 +1,4 @@
-.model flat,c
+.model flat
 .const
 align 16
 ;; =================== packed single precision floating point for TAN,COT ====================
@@ -100,23 +100,3 @@ mask_2_d						dword	2h,2h,2h,2h
 
 
 ;; ================================ PROTOTYPES ================================================
-
-tan_avx2_ps proto,
-			x_ptr:ptr real4,
-			n_arg:dword,
-			out_ptr:ptr real4	
-			
-cot_avx2_ps proto,
-			x_ptr:ptr real4,
-			n_arg:dword,
-			out_ptr:ptr real4	
-
-tan_avx2_pd proto,
-			x_ptr:ptr real8,
-			n_arg:dword,
-			out_ptr:ptr real8	
-			
-cot_avx2_pd proto,
-			x_ptr:ptr real8,
-			n_arg:dword,
-			out_ptr:ptr real8

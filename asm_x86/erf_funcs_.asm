@@ -1,7 +1,6 @@
 include asm_x86_incs/erf_funcs.inc
 
 .code
-;;		extern "C" bool erf_avx2_pd(double const *in,int size,double *out);
 erf_avx2_macro_pd			macro
 							;; exp starts here:
 							vmovupd ymm1,ymmword ptr [log2e_pd]
@@ -47,32 +46,33 @@ erf_avx2_macro_pd			macro
 							vmulpd ymm3,ymm3,ymm2														;; z = ymm3
 							;; exp ends here:
 							endm
+;;										ecx,			edx
+;;		extern "C" bool erf_avx2_pd(double const *in,double *out,int size);
+erf_avx2_pd@@12				proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
-erf_avx2_pd					proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
 
-				 @@:		vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0		
+				 @@:		vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0		
 							vandpd ymm7,ymm0,ymmword ptr [pos_sign_mask_q]	;; x_new = ymm7
 							vxorpd ymm6,ymm6,ymm6							
 							vcmpltpd ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -95,17 +95,17 @@ erf_avx2_pd					proc uses ebx,
 							vmulpd ymm7,ymm5,ymmword ptr [mone_pd]
 							vblendvpd ymm3,ymm5,ymm7,ymm6
 							vmovapd ymmword ptr [edx],ymm3					
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0		
+							vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0		
 							vandpd ymm7,ymm0,ymmword ptr [pos_sign_mask_q]	;; x_new = ymm7
 							vxorpd ymm6,ymm6,ymm6							
 							vcmpltpd ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -128,11 +128,11 @@ erf_avx2_pd					proc uses ebx,
 							vmulpd ymm7,ymm5,ymmword ptr [mone_pd]
 							vblendvpd ymm3,ymm5,ymm7,ymm6
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm3   
@@ -148,10 +148,13 @@ erf_avx2_pd					proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm6
 
 				done:		vzeroupper	
-							ret
-erf_avx2_pd					endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+erf_avx2_pd@@12				endp
 
-;;		extern "C" bool erfc_avx2_pd(double const *in,int size,double *out);
+
 erfc_avx2_macro_pd			macro
 							;; exp starts here:
 							vmovupd ymm1,ymmword ptr [log2e_pd]
@@ -197,32 +200,33 @@ erfc_avx2_macro_pd			macro
 							vmulpd ymm3,ymm3,ymm2														;; z = ymm3
 							;; exp ends here:
 							endm
+;;										ecx,			edx
+;;		extern "C" bool erfc_avx2_pd(double const *in,double *out,int size);
+erfc_avx2_pd@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
-erfc_avx2_pd				proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
 
-				 @@:		vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0		
+				 @@:		vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0		
 							vandpd ymm7,ymm0,ymmword ptr [pos_sign_mask_q]	;; x_new = ymm7
 							vxorpd ymm6,ymm6,ymm6							
 							vcmpltpd ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -246,17 +250,17 @@ erfc_avx2_pd				proc uses ebx,
 							vblendvpd ymm3,ymm5,ymm7,ymm6
 							vsubpd ymm3,ymm4,ymm3
 							vmovapd ymmword ptr [edx],ymm3					
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0		
+							vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0		
 							vandpd ymm7,ymm0,ymmword ptr [pos_sign_mask_q]	;; x_new = ymm7
 							vxorpd ymm6,ymm6,ymm6							
 							vcmpltpd ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -280,11 +284,11 @@ erfc_avx2_pd				proc uses ebx,
 							vblendvpd ymm3,ymm5,ymm7,ymm6
 							vsubpd ymm3,ymm4,ymm3
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm3   
@@ -300,11 +304,13 @@ erfc_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm6
 
 				done:		vzeroupper
-							ret
-erfc_avx2_pd				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+erfc_avx2_pd@@12			endp
 
 
-;;		extern "C" erf_avx2_ps(float const *in,int size,float *out);
 erf_avx2_macro_ps			macro
 							;; exp starts here:
 							vminps ymm0,ymm0,ymmword ptr [exp_hi_ps]
@@ -338,32 +344,32 @@ erf_avx2_macro_ps			macro
 							vmulps ymm0,ymm0,ymm2
 							;; exp ends here:
 							endm
-							
-erf_avx2_ps					proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4
+;;									ecx,		edx
+;;		extern "C" erf_avx2_ps(float const *in,float *out,int size);
+erf_avx2_ps@@12				proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
+
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
-
-				 @@:		vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0	
+				 @@:		vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0	
 							vandps ymm7,ymm0,ymmword ptr [pos_sign_mask_d]	;; x_new = ymm7
 							vxorps ymm6,ymm6,ymm6							
 							vcmpltps ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -387,17 +393,17 @@ erf_avx2_ps					proc uses ebx,
 							vblendvps ymm3,ymm5,ymm7,ymm6
 							vmovaps ymmword ptr [edx],ymm3
 							
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0	
+							vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0	
 							vandps ymm7,ymm0,ymmword ptr [pos_sign_mask_d]	;; x_new = ymm7
 							vxorps ymm6,ymm6,ymm6							
 							vcmpltps ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -421,20 +427,20 @@ erf_avx2_ps					proc uses ebx,
 							vblendvps ymm3,ymm5,ymm7,ymm6
 
 							movaps xmm6,xmm3	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm3,1 
 							movaps xmmword ptr [edx],xmm3
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
 
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -450,10 +456,12 @@ erf_avx2_ps					proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 
 				done:		vzeroupper
-							ret
-erf_avx2_ps					endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+erf_avx2_ps@@12				endp
 
-;;		extern "C" erfc_avx2_ps(float const *in,int size,float *out);
 erfc_avx2_macro_ps			macro
 							;; exp starts here:
 							vminps ymm0,ymm0,ymmword ptr [exp_hi_ps]
@@ -488,32 +496,33 @@ erfc_avx2_macro_ps			macro
 							;; exp ends here:
 
 							endm
+;;									ecx,			edx
+;;		extern "C" erfc_avx2_ps(float const *in,float *out,int size);
+erfc_avx2_ps@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
-erfc_avx2_ps				proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
 
-				 @@:		vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0	
+				 @@:		vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0	
 							vandps ymm7,ymm0,ymmword ptr [pos_sign_mask_d]	;; x_new = ymm7
 							vxorps ymm6,ymm6,ymm6							
 							vcmpltps ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -538,17 +547,17 @@ erfc_avx2_ps				proc uses ebx,
 							vsubps ymm3,ymm4,ymm3
 							vmovaps ymmword ptr [edx],ymm3
 							
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0	
+							vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0	
 							vandps ymm7,ymm0,ymmword ptr [pos_sign_mask_d]	;; x_new = ymm7
 							vxorps ymm6,ymm6,ymm6							
 							vcmpltps ymm6,ymm0,ymm6							;; x_mask = ymm6
@@ -573,20 +582,20 @@ erfc_avx2_ps				proc uses ebx,
 							vsubps ymm3,ymm4,ymm3
 
 							movaps xmm6,xmm3	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm3,1 
 							movaps xmmword ptr [edx],xmm3
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
 
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -602,7 +611,10 @@ erfc_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 
 				done:		vzeroupper
-							ret
-erfc_avx2_ps				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+erfc_avx2_ps@@12			endp
 							end
 

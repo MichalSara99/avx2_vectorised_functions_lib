@@ -50,7 +50,8 @@ namespace avx2_basics
 
 /// basic operations:
 
-template <typename Type> bool mul_broad_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+template <typename Type>
+bool __vectorcall mul_broad_avx2(Type const *x_aligned_32, Type const y, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point broadcast multiplication
@@ -62,7 +63,8 @@ template <typename Type> bool mul_broad_avx2(Type const *x_aligned_32, Type cons
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool mul_broad_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall mul_broad_avx2(double const *x_aligned_32, double const y, double *out_aligned_32,
+                                                   int size);
 
 /**
  * Packed single-precision floating-point broadcast multiplication
@@ -74,10 +76,11 @@ AVX2_MATH_X86_API bool mul_broad_avx2(double const *x_aligned_32, double const y
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool mul_broad_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall mul_broad_avx2(float const *x_aligned_32, float const y, float *out_aligned_32,
+                                                   int size);
 
 template <typename Type>
-bool mul_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+bool __vectorcall mul_avx2(Type const *x_aligned_32, Type const *y_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point multiplication
@@ -89,8 +92,8 @@ bool mul_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool mul_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
-                                double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall mul_avx2(double const *x_aligned_32, double const *y_aligned_32,
+                                             double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point multiplication
@@ -102,62 +105,69 @@ AVX2_MATH_X86_API bool mul_avx2(double const *x_aligned_32, double const *y_alig
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool mul_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
-
-template <typename Type> bool div_broad_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
-
-/**
- * Packed double-precision floating-point broadcast division
- *
- * \param x_aligned_32
- * \param y
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool div_broad_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
-
-/**
- * Packed single-precision floating-point broadcast division
- *
- * \param x_aligned_32
- * \param y
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool div_broad_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
-
-template <typename Type> bool div_broad_avx2(Type const x, Type const *y_aligned_32, int size, Type *out_aligned_32);
-
-/**
- * Packed double-precision floating-point broadcast division
- *
- * \param x
- * \param y_aligned_32
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool div_broad_avx2(double const x, double const *y_aligned_32, int size, double *out_aligned_32);
-
-/**
- * Packed single-precision floating-point broadcast division
- *
- * \param x
- * \param y_aligned_32
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool div_broad_avx2(float const x, float const *y_aligned_32, int size, float *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall mul_avx2(float const *x_aligned_32, float const *y_aligned_32,
+                                             float *out_aligned_32, int size);
 
 template <typename Type>
-bool div_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+bool __vectorcall div_broad_avx2(Type const *x_aligned_32, Type const y, Type *out_aligned_32, int size);
+
+/**
+ * Packed double-precision floating-point broadcast division
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall div_broad_avx2(double const *x_aligned_32, double const y, double *out_aligned_32,
+                                                   int size);
+
+/**
+ * Packed single-precision floating-point broadcast division
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall div_broad_avx2(float const *x_aligned_32, float const y, float *out_aligned_32,
+                                                   int size);
+
+template <typename Type>
+bool __vectorcall div_broad_avx2(Type const x, Type const *y_aligned_32, Type *out_aligned_32, int size);
+
+/**
+ * Packed double-precision floating-point broadcast division
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall div_broad_avx2(double const x, double const *y_aligned_32, double *out_aligned_32,
+                                                   int size);
+
+/**
+ * Packed single-precision floating-point broadcast division
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall div_broad_avx2(float const x, float const *y_aligned_32, float *out_aligned_32,
+                                                   int size);
+
+template <typename Type>
+bool __vectorcall div_avx2(Type const *x_aligned_32, Type const *y_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point division
@@ -169,8 +179,8 @@ bool div_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool div_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
-                                double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall div_avx2(double const *x_aligned_32, double const *y_aligned_32,
+                                             double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point division
@@ -182,9 +192,11 @@ AVX2_MATH_X86_API bool div_avx2(double const *x_aligned_32, double const *y_alig
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool div_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall div_avx2(float const *x_aligned_32, float const *y_aligned_32,
+                                             float *out_aligned_32, int size);
 
-template <typename Type> bool add_broad_avx2(Type const *x_aligned_16, Type const y, int size, Type *out_aligned_16);
+template <typename Type>
+bool __vectorcall add_broad_avx2(Type const *x_aligned_32, Type const y, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point broadcast addition
@@ -196,7 +208,8 @@ template <typename Type> bool add_broad_avx2(Type const *x_aligned_16, Type cons
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool add_broad_avx2(double const *x_aligned_16, double const y, int size, double *out_aligned_16);
+AVX2_MATH_X86_API bool __vectorcall add_broad_avx2(double const *x_aligned_32, double const y, double *out_aligned_32,
+                                                   int size);
 
 /**
  * Packed single-precision floating-point broadcast addition
@@ -208,10 +221,11 @@ AVX2_MATH_X86_API bool add_broad_avx2(double const *x_aligned_16, double const y
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool add_broad_avx2(float const *x_aligned_16, float const y, int size, float *out_aligned_16);
+AVX2_MATH_X86_API bool __vectorcall add_broad_avx2(float const *x_aligned_32, float const y, float *out_aligned_32,
+                                                   int size);
 
 template <typename Type>
-bool add_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+bool __vectorcall add_avx2(Type const *x_aligned_32, Type const *y_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point addition
@@ -223,8 +237,8 @@ bool add_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool add_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
-                                double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall add_avx2(double const *x_aligned_32, double const *y_aligned_32,
+                                             double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point addition
@@ -236,62 +250,69 @@ AVX2_MATH_X86_API bool add_avx2(double const *x_aligned_32, double const *y_alig
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool add_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
-
-template <typename Type> bool sub_broad_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
-
-/**
- * Packed double-precision floating-point broadcast subtraction
- *
- * \param x_aligned_32
- * \param y
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool sub_broad_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
-
-/**
- * Packed single-precision floating-point broadcast subtraction
- *
- * \param x_aligned_32
- * \param y
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool sub_broad_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
-
-template <typename Type> bool sub_broad_avx2(Type const x, Type const *y_aligned_32, int size, Type *out_aligned_32);
-
-/**
- * Packed double-precision floating-point broadcast subtraction
- *
- * \param x
- * \param y_aligned_32
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool sub_broad_avx2(double const x, double const *y_aligned_32, int size, double *out_aligned_32);
-
-/**
- * Packed single-precision floating-point broadcast subtraction
- *
- * \param x
- * \param y_aligned_32
- * \param size
- * \param out_aligned_32
- * \return boolean indicating success or failure
- */
-template <>
-AVX2_MATH_X86_API bool sub_broad_avx2(float const x, float const *y_aligned_32, int size, float *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall add_avx2(float const *x_aligned_32, float const *y_aligned_32,
+                                             float *out_aligned_32, int size);
 
 template <typename Type>
-bool sub_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+bool __vectorcall sub_broad_avx2(Type const *x_aligned_32, Type const y, Type *out_aligned_32, int size);
+
+/**
+ * Packed double-precision floating-point broadcast subtraction
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall sub_broad_avx2(double const *x_aligned_32, double const y, double *out_aligned_32,
+                                                   int size);
+
+/**
+ * Packed single-precision floating-point broadcast subtraction
+ *
+ * \param x_aligned_32
+ * \param y
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall sub_broad_avx2(float const *x_aligned_32, float const y, float *out_aligned_32,
+                                                   int size);
+
+template <typename Type>
+bool __vectorcall sub_broad_avx2(Type const x, Type const *y_aligned_32, Type *out_aligned_32, int size);
+
+/**
+ * Packed double-precision floating-point broadcast subtraction
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall sub_broad_avx2(double const x, double const *y_aligned_32, double *out_aligned_32,
+                                                   int size);
+
+/**
+ * Packed single-precision floating-point broadcast subtraction
+ *
+ * \param x
+ * \param y_aligned_32
+ * \param size
+ * \param out_aligned_32
+ * \return boolean indicating success or failure
+ */
+template <>
+AVX2_MATH_X86_API bool __vectorcall sub_broad_avx2(float const x, float const *y_aligned_32, float *out_aligned_32,
+                                                   int size);
+
+template <typename Type>
+bool __vectorcall sub_avx2(Type const *x_aligned_32, Type const *y_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point subtraction
@@ -303,8 +324,8 @@ bool sub_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool sub_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
-                                double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall sub_avx2(double const *x_aligned_32, double const *y_aligned_32,
+                                             double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point subtraction
@@ -316,9 +337,10 @@ AVX2_MATH_X86_API bool sub_avx2(double const *x_aligned_32, double const *y_alig
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool sub_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall sub_avx2(float const *x_aligned_32, float const *y_aligned_32,
+                                             float *out_aligned_32, int size);
 
-template <typename Type> bool neg_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall neg_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point negative value
@@ -328,7 +350,7 @@ template <typename Type> bool neg_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool neg_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall neg_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point negative value
@@ -338,9 +360,9 @@ template <> AVX2_MATH_X86_API bool neg_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool neg_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall neg_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool inv_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall inv_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point inverse(=inverted) value
@@ -350,7 +372,7 @@ template <typename Type> bool inv_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool inv_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall inv_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point inverse(=inverted) value
@@ -360,11 +382,11 @@ template <> AVX2_MATH_X86_API bool inv_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool inv_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall inv_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
 ///// basic functions:
 
-template <typename Type> bool abs_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall abs_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point absolute value
@@ -374,7 +396,7 @@ template <typename Type> bool abs_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool abs_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall abs_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point absolute value
@@ -384,9 +406,9 @@ template <> AVX2_MATH_X86_API bool abs_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool abs_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall abs_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool sqrt_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall sqrt_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point square root value
@@ -396,7 +418,8 @@ template <typename Type> bool sqrt_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sqrt_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall sqrt_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * packed single-precision floating-point square root value
@@ -406,9 +429,9 @@ template <> AVX2_MATH_X86_API bool sqrt_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sqrt_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall sqrt_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool sqrp_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall sqrp_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point square power value
@@ -418,7 +441,8 @@ template <typename Type> bool sqrp_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sqrp_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall sqrp_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point square power value
@@ -428,10 +452,10 @@ template <> AVX2_MATH_X86_API bool sqrp_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sqrp_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall sqrp_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
 template <typename Type>
-bool min_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+bool __vectorcall min_avx2(Type const *x_aligned_32, Type const *y_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point minimum values from a pair of
@@ -444,7 +468,8 @@ bool min_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool min_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall min_avx2(float const *x_aligned_32, float const *y_aligned_32,
+                                             float *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point minimum values from a pair of
@@ -457,10 +482,11 @@ AVX2_MATH_X86_API bool min_avx2(float const *x_aligned_32, float const *y_aligne
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool min_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
-                                double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall min_avx2(double const *x_aligned_32, double const *y_aligned_32,
+                                             double *out_aligned_32, int size);
 
-template <typename Type> bool min_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+template <typename Type>
+bool __vectorcall min_avx2(Type const *x_aligned_32, Type const y, Type *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point minimum values from a pair of
@@ -472,7 +498,8 @@ template <typename Type> bool min_avx2(Type const *x_aligned_32, Type const y, i
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool min_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall min_avx2(float const *x_aligned_32, float const y, float *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point minimum values from a pair of
@@ -485,10 +512,11 @@ template <> AVX2_MATH_X86_API bool min_avx2(float const *x_aligned_32, float con
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool min_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall min_avx2(double const *x_aligned_32, double const y, double *out_aligned_32,
+                                             int size);
 
 template <typename Type>
-bool max_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type *out_aligned_32);
+bool __vectorcall max_avx2(Type const *x_aligned_32, Type const *y_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point maximum values from a pair of
@@ -501,7 +529,8 @@ bool max_avx2(Type const *x_aligned_32, Type const *y_aligned_32, int size, Type
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool max_avx2(float const *x_aligned_32, float const *y_aligned_32, int size, float *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall max_avx2(float const *x_aligned_32, float const *y_aligned_32,
+                                             float *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point maximum values from a pair of
@@ -514,10 +543,11 @@ AVX2_MATH_X86_API bool max_avx2(float const *x_aligned_32, float const *y_aligne
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool max_avx2(double const *x_aligned_32, double const *y_aligned_32, int size,
-                                double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall max_avx2(double const *x_aligned_32, double const *y_aligned_32,
+                                             double *out_aligned_32, int size);
 
-template <typename Type> bool max_avx2(Type const *x_aligned_32, Type const y, int size, Type *out_aligned_32);
+template <typename Type>
+bool __vectorcall max_avx2(Type const *x_aligned_32, Type const y, Type *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point maximum values from a pair of
@@ -529,7 +559,8 @@ template <typename Type> bool max_avx2(Type const *x_aligned_32, Type const y, i
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool max_avx2(float const *x_aligned_32, float const y, int size, float *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall max_avx2(float const *x_aligned_32, float const y, float *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point maximum values from a pair of
@@ -542,11 +573,12 @@ template <> AVX2_MATH_X86_API bool max_avx2(float const *x_aligned_32, float con
  * \return boolean indicating success or failure
  */
 template <>
-AVX2_MATH_X86_API bool max_avx2(double const *x_aligned_32, double const y, int size, double *out_aligned_32);
+AVX2_MATH_X86_API bool __vectorcall max_avx2(double const *x_aligned_32, double const y, double *out_aligned_32,
+                                             int size);
 
 ///// exponential functions:
 
-template <typename Type> bool exp_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall exp_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point exponential function
@@ -556,7 +588,7 @@ template <typename Type> bool exp_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool exp_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall exp_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point exponential function
@@ -566,10 +598,10 @@ template <> AVX2_MATH_X86_API bool exp_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool exp_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall exp_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
 template <typename Type, typename IntType>
-bool pow2n_avx2(IntType const *in_aligned_32, int size, Type *out_aligned_32);
+bool __vectorcall pow2n_avx2(IntType const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point 2^n
@@ -579,7 +611,8 @@ bool pow2n_avx2(IntType const *in_aligned_32, int size, Type *out_aligned_32);
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool pow2n_avx2(long long const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall pow2n_avx2(long long const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point 2^n
@@ -589,9 +622,9 @@ template <> AVX2_MATH_X86_API bool pow2n_avx2(long long const *in_aligned_32, in
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool pow2n_avx2(int const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall pow2n_avx2(int const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool expm_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall expm_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point exponential with minus exponent function
@@ -601,7 +634,8 @@ template <typename Type> bool expm_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool expm_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall expm_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point exponential with minus exponent function
@@ -611,11 +645,11 @@ template <> AVX2_MATH_X86_API bool expm_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool expm_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall expm_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
 /// logaritmhmic functions:
 
-template <typename Type> bool log_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall log_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point natural log function
@@ -625,7 +659,7 @@ template <typename Type> bool log_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool log_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall log_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point natural log function
@@ -635,11 +669,11 @@ template <> AVX2_MATH_X86_API bool log_avx2(float const *in_aligned_32, int size
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool log_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall log_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /// trig functions:
 
-template <typename Type> bool cos_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall cos_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point cosine
@@ -649,7 +683,7 @@ template <typename Type> bool cos_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool cos_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall cos_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point cosine
@@ -659,9 +693,9 @@ template <> AVX2_MATH_X86_API bool cos_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool cos_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall cos_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool sin_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall sin_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point sine
@@ -671,7 +705,7 @@ template <typename Type> bool sin_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sin_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall sin_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point sine
@@ -681,9 +715,9 @@ template <> AVX2_MATH_X86_API bool sin_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sin_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall sin_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool tan_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall tan_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point tangens
@@ -693,7 +727,7 @@ template <typename Type> bool tan_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool tan_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall tan_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point tangens
@@ -703,9 +737,9 @@ template <> AVX2_MATH_X86_API bool tan_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool tan_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall tan_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool cot_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall cot_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point cotangens
@@ -715,7 +749,7 @@ template <typename Type> bool cot_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool cot_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall cot_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point cotangens
@@ -725,9 +759,9 @@ template <> AVX2_MATH_X86_API bool cot_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool cot_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall cot_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool acos_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall acos_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point arcus cosine
@@ -737,7 +771,8 @@ template <typename Type> bool acos_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool acos_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall acos_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point arcus cosine
@@ -747,9 +782,9 @@ template <> AVX2_MATH_X86_API bool acos_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool acos_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall acos_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool asin_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall asin_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point arcus sine
@@ -759,7 +794,8 @@ template <typename Type> bool asin_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool asin_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall asin_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point arcus sine
@@ -769,9 +805,9 @@ template <> AVX2_MATH_X86_API bool asin_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool asin_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall asin_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool atan_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall atan_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point arcus tangens
@@ -781,7 +817,8 @@ template <typename Type> bool atan_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool atan_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall atan_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point arcus tangens
@@ -791,11 +828,11 @@ template <> AVX2_MATH_X86_API bool atan_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool atan_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall atan_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
 /// hyperbolic functions:
 
-template <typename Type> bool cosh_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall cosh_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point hyperbolic cosine
@@ -805,7 +842,8 @@ template <typename Type> bool cosh_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool cosh_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall cosh_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point hyperbolic cosine
@@ -815,9 +853,9 @@ template <> AVX2_MATH_X86_API bool cosh_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool cosh_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall cosh_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool sinh_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall sinh_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point hyperbolic sine
@@ -827,7 +865,8 @@ template <typename Type> bool sinh_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sinh_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall sinh_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point hyperbolic sine
@@ -837,9 +876,9 @@ template <> AVX2_MATH_X86_API bool sinh_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool sinh_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall sinh_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool tanh_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall tanh_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point hyperbolic tangens
@@ -849,7 +888,8 @@ template <typename Type> bool tanh_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool tanh_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall tanh_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point hyperbolic tangens
@@ -859,7 +899,7 @@ template <> AVX2_MATH_X86_API bool tanh_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool tanh_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall tanh_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
 } // namespace avx2_basics
 
@@ -949,7 +989,7 @@ template <> AVX2_MATH_X86_API bool tanh_avx2(float const *in_aligned_32, int siz
 namespace avx2_specials
 {
 
-template <typename Type> bool erf_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall erf_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point error function
@@ -959,7 +999,7 @@ template <typename Type> bool erf_avx2(Type const *in_aligned_32, int size, Type
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool erf_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall erf_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point error function
@@ -969,9 +1009,9 @@ template <> AVX2_MATH_X86_API bool erf_avx2(double const *in_aligned_32, int siz
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool erf_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall erf_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool erfc_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool __vectorcall erfc_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point complementary error function
@@ -981,7 +1021,8 @@ template <typename Type> bool erfc_avx2(Type const *in_aligned_32, int size, Typ
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool erfc_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall erfc_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point complementary error function
@@ -991,9 +1032,9 @@ template <> AVX2_MATH_X86_API bool erfc_avx2(double const *in_aligned_32, int si
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool erfc_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <> AVX2_MATH_X86_API bool __vectorcall erfc_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 
-template <typename Type> bool expint_avx2(Type const *in_aligned_32, int size, Type *out_aligned_32);
+template <typename Type> bool expint_avx2(Type const *in_aligned_32, Type *out_aligned_32, int size);
 
 /**
  * Packed double-precision floating-point exponential integral function
@@ -1003,7 +1044,8 @@ template <typename Type> bool expint_avx2(Type const *in_aligned_32, int size, T
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool expint_avx2(double const *in_aligned_32, int size, double *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall expint_avx2(double const *in_aligned_32, double *out_aligned_32, int size);
 
 /**
  * Packed single-precision floating-point exponential integral function
@@ -1013,7 +1055,8 @@ template <> AVX2_MATH_X86_API bool expint_avx2(double const *in_aligned_32, int 
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-template <> AVX2_MATH_X86_API bool expint_avx2(float const *in_aligned_32, int size, float *out_aligned_32);
+template <>
+AVX2_MATH_X86_API bool __vectorcall expint_avx2(float const *in_aligned_32, float *out_aligned_32, int size);
 } // namespace avx2_specials
 
 /// <summary>

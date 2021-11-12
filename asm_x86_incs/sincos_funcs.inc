@@ -1,4 +1,4 @@
-.model flat,c
+.model flat
 
 ;; ============================= CONSTANTS =================================
 .const
@@ -54,23 +54,3 @@ minusMask_ps				dword   80000000h,80000000h,80000000h,80000000h
 int_one						dword	1h,1h,1h,1h
 int_one_own					dword	1h,1h,1h,1h,1h,1h,1h,1h
 ;; ============================ PROTOTYPES =================================
-
-sin_avx2_pd proto,
-			x_ptr:ptr real8,
-			n_arg:dword,
-			out_ptr:ptr real8
-
-sin_avx2_ps proto,
-			x_ptr:ptr real4,
-			n_arg:dword,
-			out_ptr:ptr real4
-
-cos_avx2_pd proto,
-			x_ptr:ptr real8,
-			n_arg:dword,
-			out_ptr:ptr real8
-
-cos_avx2_ps proto,
-			x_ptr:ptr real4,
-			n_arg:dword,
-			out_ptr:ptr real4

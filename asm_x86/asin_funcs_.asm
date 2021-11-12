@@ -1,7 +1,6 @@
 include asm_x86_incs/asin_funcs.inc
 
 .code
-;; extern "C" bool asin_avx2_pd(double const *x, int n, double *out);
 asin_avx2_macro_pd			macro
 							;; this is for a > 0.625 case
 							vmovupd ymm3,ymmword ptr [one_pd]
@@ -42,31 +41,31 @@ asin_avx2_macro_pd			macro
 							vdivpd ymm4,ymm4,ymm6
 							vfmadd213pd	ymm4, ymm0,ymm0
 							endm
+;;							ecx,						edx,
+;;	bool asin_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
+asin_avx2_pd@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
-asin_avx2_pd				proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8
-
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
 
-					@@:		vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0
+					@@:		vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0
 							vxorpd ymm7,ymm7,ymm7
 							vcmpltpd ymm7,ymm0,ymm7							;; sign = ymm7
 							vandpd ymm0,ymm0,ymmword ptr [pos_sign_mask_q]	;; a = ymm0 = fabs(x)
@@ -80,21 +79,21 @@ asin_avx2_pd				proc uses ebx,
 							;; invert sign of ymm0:
 							vxorpd ymm1,ymm5,ymmword ptr [neg_sign_mask_q]
 							vblendvpd ymm6,ymm6,ymm1,ymm7
-							vblendvpd ymm6,ymm6,ymmword ptr [ebx],ymm2
+							vblendvpd ymm6,ymm6,ymmword ptr [ecx],ymm2
 
 							vmovapd ymmword ptr [edx],ymm6
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0
+							vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0
 							vxorpd ymm7,ymm7,ymm7
 							vcmpltpd ymm7,ymm0,ymm7							;; sign = ymm7
 							vandpd ymm0,ymm0,ymmword ptr [pos_sign_mask_q]	;; a = ymm0 = fabs(x)
@@ -108,13 +107,13 @@ asin_avx2_pd				proc uses ebx,
 							;; invert sign of ymm0:
 							vxorpd ymm1,ymm5,ymmword ptr [neg_sign_mask_q]
 							vblendvpd ymm6,ymm6,ymm1,ymm7
-							vblendvpd ymm7,ymm6,ymmword ptr [ebx],ymm2
+							vblendvpd ymm7,ymm6,ymmword ptr [ecx],ymm2
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm7   
@@ -130,10 +129,13 @@ asin_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm6
 
 			done:			vzeroupper	
-							ret
-asin_avx2_pd				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+asin_avx2_pd@@12			endp
 
-;; extern "C" bool asin_avx2_ps(float const *x, int n, float *out);
+
 asin_avx2_macro_ps			macro
 							;; this is for a > 0.5 case
 							vmovups ymm3,ymmword ptr [one_ps]
@@ -159,30 +161,31 @@ asin_avx2_macro_ps			macro
 							vblendvps ymm3,ymm3,ymm6,ymm2
 
 							endm
-asin_avx2_ps				proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4
+;;							ecx,					edx
+;;	bool asin_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
+asin_avx2_ps@@12			proc near
+							n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
 
-					@@:		vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0
+					@@:		vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0
 							vmovaps	ymm6,ymm0
 							vxorps ymm7,ymm7,ymm7
 							vcmpltps ymm7,ymm0,ymm7							;; sign = ymm7 = x < 0.0
@@ -197,18 +200,18 @@ asin_avx2_ps				proc uses ebx,
 							vblendvps ymm3,ymm3,ymm5,ymm7
 
 							vmovaps ymmword ptr [edx],ymm3
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0
+							vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0
 							vmovaps	ymm6,ymm0
 							vxorps ymm7,ymm7,ymm7
 							vcmpltps ymm7,ymm0,ymm7							;; sign = ymm7 = x < 0.0
@@ -223,20 +226,20 @@ asin_avx2_ps				proc uses ebx,
 							vblendvps ymm3,ymm3,ymm5,ymm7
 
 							movaps xmm6,xmm3	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm3,1 
 							movaps xmmword ptr [edx],xmm3
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
 
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -251,7 +254,10 @@ asin_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 4],xmm2
 							movss real4 ptr [edx + 8],xmm4
 
-			done:			vzeroupper	
-							ret
-asin_avx2_ps				endp
+			done:			vzeroupper
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+asin_avx2_ps@@12			endp
 							end

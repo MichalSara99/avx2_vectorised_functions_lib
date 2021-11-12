@@ -1,4 +1,4 @@
-.model flat,c
+.model flat
 
 ;; ============================= CONSTANTS =================================
 .const 
@@ -167,15 +167,3 @@ pos_sign_mask_q				qword	7fffffffffffffffh,7fffffffffffffffh
 							qword	7fffffffffffffffh,7fffffffffffffffh
 
 ;; ============================ PROTOTYPES =================================
-
-
-expint_avx2_pd	proto,
-			x_ptr:ptr real8,
-			n_arg:dword,
-			out_ptr:ptr real8
-
-
-expint_avx2_ps	proto,
-			x_ptr:ptr real4,
-			n_arg:dword,
-			out_ptr:ptr real4

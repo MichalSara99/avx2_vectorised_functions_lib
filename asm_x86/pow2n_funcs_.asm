@@ -1,56 +1,56 @@
 include asm_x86_incs/pow2n_funcs.inc
 
 .code
-;;		extern "C" bool pow2n_avx2_pd(long long const *in,int size,double *out);
-pow2n_avx2_pd				proc uses ebx,
-									n_ptr:ptr qword,
-									n_arg:dword,
-									out_ptr:ptr real8
+;;										ecx,				edx
+;;		extern "C" bool pow2n_avx2_pd(long long const *in,double *out,int size);
+pow2n_avx2_pd@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 							
 							xor eax,eax
 
-							mov ebx,n_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
-					@@:		vmovdqa	ymm7,ymmword ptr [ebx]
+					@@:		vmovdqa	ymm7,ymmword ptr [ecx]
 							vmovdqu	ymm0,ymmword ptr [bias_q]
 							vpaddq ymm1,ymm0,ymm7
 							vpsllq ymm1,ymm1,52
 							vmovapd ymmword ptr [edx],ymm1
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovdqa	ymm7,ymmword ptr [ebx]
+							vmovdqa	ymm7,ymmword ptr [ecx]
 							vmovdqu	ymm0,ymmword ptr [bias_q]
 							vpaddq ymm1,ymm0,ymm7
 							vpsllq ymm1,ymm1,52
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm1   
@@ -65,72 +65,73 @@ pow2n_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 8],xmm2
 							vmovsd real8 ptr [edx + 16],xmm5
 
-
 			done:			vzeroupper
-							ret
-pow2n_avx2_pd				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+pow2n_avx2_pd@@12			endp
 
-;;		extern "C" bool pow2n_avx2_ps(int const *in,int size,float *out);
-pow2n_avx2_ps				proc uses ebx,
-									n_ptr:ptr dword,
-									n_arg:dword,
-									out_ptr:ptr real4
+;;										ecx,		edx
+;;		extern "C" bool pow2n_avx2_ps(int const *in,float *out,int size);
+pow2n_avx2_ps@@12			proc near
+								n_arg		textequ			<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
 							xor eax,eax
 
-							mov ebx,n_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
-					@@:		vmovdqa	ymm7,ymmword ptr [ebx]
+					@@:		vmovdqa	ymm7,ymmword ptr [ecx]
 							vmovdqu	ymm0,ymmword ptr [bias_d]
 							vpaddd ymm1,ymm0,ymm7
 							vpslld ymm1,ymm1,23
 							vmovaps ymmword ptr [edx],ymm1
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B						
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovdqa	ymm7,ymmword ptr [ebx]
+							vmovdqa	ymm7,ymmword ptr [ecx]
 							vmovdqu	ymm0,ymmword ptr [bias_d]
 							vpaddd ymm1,ymm0,ymm7
 							vpslld ymm1,ymm1,23
 
 							movaps xmm6,xmm1	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm1,1 
 							movaps xmmword ptr [edx],xmm1
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
-
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -146,6 +147,9 @@ pow2n_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 
 				done:		vzeroupper
-							ret
-pow2n_avx2_ps				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+pow2n_avx2_ps@@12			endp
 							end

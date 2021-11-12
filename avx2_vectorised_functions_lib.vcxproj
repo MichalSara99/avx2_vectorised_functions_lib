@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basic_operations.h" />
     <ClInclude Include="headers\avx2_math_x86.h" />
     <ClInclude Include="headers\avx2_math_x86_lib.h" />
     <ClInclude Include="headers\avx2_utilities.h" />
     <ClInclude Include="headers\basic_funcs.h" />
+    <ClInclude Include="headers\basic_operations.h" />
     <ClInclude Include="headers\exp_funcs.h" />
     <ClInclude Include="headers\framework.h" />
     <ClInclude Include="headers\hyp_funcs.h" />

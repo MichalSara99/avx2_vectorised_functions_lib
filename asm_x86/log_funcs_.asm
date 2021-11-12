@@ -1,7 +1,7 @@
 include asm_x86_incs/log_funcs.inc
 
 .code
-;;		extern "C" bool log_avx2_pd(double const* x, int n, double* out);
+
 log_avx2_macro_pd			macro
 							vpand ymm6,ymm0,ymmword ptr[qint_twentyfourseven] 
 							vpsrlq ymm6,ymm6,52									;; exps64 = ymm6
@@ -37,58 +37,57 @@ log_avx2_macro_pd			macro
 							vaddpd ymm3,ymm3,ymm6								;; log2_x = ymm3
 							vdivpd ymm3,ymm3,ymmword ptr[log_q_pd]
 							endm
-
-log_avx2_pd					proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8	
+;;										ecx,		edx
+;;		extern "C" bool log_avx2_pd(double const* x, double* out,int n);
+log_avx2_pd@@12				proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 	
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
-					@@:		vmovapd ymm0,ymmword ptr[ebx]
+					@@:		vmovapd ymm0,ymmword ptr[ecx]
 							;; =====
 							log_avx2_macro_pd
 							;; =====
 							vmovapd ymmword ptr [edx],ymm3
-
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovapd ymm0,ymmword ptr[ebx]
+							vmovapd ymm0,ymmword ptr[ecx]
 							;; =====
 							log_avx2_macro_pd
 							;; =====
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm3   
@@ -104,10 +103,13 @@ log_avx2_pd					proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm6
 
 			done:			vzeroupper
-							ret
-log_avx2_pd					endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+log_avx2_pd@@12				endp
 
-;;		extern "C" bool log_avx2_ps(float const* x, int n, float* out);
+
 log_avx2_macro_ps			macro
 							vcmpleps ymm1,ymm0,ymm7							; invalid_mask = ymm1
 							vmaxps ymm0,ymm0,ymmword ptr [int_min_norm]	
@@ -145,70 +147,69 @@ log_avx2_macro_ps			macro
 							vaddps ymm0,ymm0,ymm5
 							vorps ymm0,ymm0,ymm1
 							endm
-
-log_avx2_ps					proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4		
+;;										ecx,			edx
+;;		extern "C" bool log_avx2_ps(float const* x,float* out, int n);
+log_avx2_ps@@12				proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
-
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
 					@@:		vxorpd ymm7,ymm7,ymm7
-							vmovapd ymm0,ymmword ptr [ebx]					; x = ymm0
+							vmovapd ymm0,ymmword ptr [ecx]					; x = ymm0
 							;; =====
 							log_avx2_macro_ps
 							;; =====
 							vmovaps ymmword ptr [edx],ymm0
 
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
 							vxorpd ymm7,ymm7,ymm7
-							vmovapd ymm0,ymmword ptr [ebx]					; x = ymm0
+							vmovapd ymm0,ymmword ptr [ecx]					; x = ymm0
 							;; =====
 							log_avx2_macro_ps
 							;; =====
 
 							movaps xmm6,xmm0	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm0,1 
 							movaps xmmword ptr [edx],xmm0
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
 
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -224,6 +225,9 @@ log_avx2_ps					proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 
 			done:			vzeroupper
-							ret
-log_avx2_ps					endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+log_avx2_ps@@12				endp
 							end

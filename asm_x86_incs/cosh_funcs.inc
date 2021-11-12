@@ -1,4 +1,4 @@
-.model flat,c
+.model flat
 
 ;; ============================= CONSTANTS =================================
 .const 
@@ -112,12 +112,3 @@ int_tentwothree				dword	3ffh,3ffh,3ffh,3ffh
 int_onetwoseven				dword	7fh,7fh,7fh,7fh,7fh,7fh,7fh,7fh
 ;; ============================ PROTOTYPES ==================================
 
-cosh_avx2_pd proto,
-			x_ptr:ptr real8,
-			n_arg:dword,
-			out_ptr:ptr real8
-
-cosh_avx2_ps proto,
-			x_ptr:ptr real4,
-			n_arg:dword,
-			out_ptr:ptr real4

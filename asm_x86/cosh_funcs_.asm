@@ -1,7 +1,6 @@
 include asm_x86_incs/cosh_funcs.inc
 
 .code
-;;		extern "C" cosh_avx2_ps(float const *in,int n,float *out);
 cosh_avx2_macro_ps			macro
 							;; exp from here:
 							vmovups ymm1,ymmword ptr [log2e_ps]
@@ -33,34 +32,34 @@ cosh_avx2_macro_ps			macro
 							vpslld ymm5,ymm5,23 							
 							vmulps ymm5,ymm5,ymm4							;; ymm5 = exp
 							endm
-
-cosh_avx2_ps				proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4
+;;									ecx,			edx			
+;;		extern "C" cosh_avx2_ps(float const *in,float *out,int n);
+cosh_avx2_ps@@12			proc near 
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
 							vxorpd ymm7,ymm7,ymm7
 
-				 @@:		vmovaps ymm0,ymmword ptr [ebx]						
+				 @@:		vmovaps ymm0,ymmword ptr [ecx]						
 							vminps ymm0,ymm0,ymmword ptr [exp_hi_ps]
 							vmaxps ymm0,ymm0,ymmword ptr [exp_lo_ps]
 							vandps ymm0,ymm0,ymmword ptr [pos_sign_mask_d]	;; x = ymm0	
@@ -73,19 +72,18 @@ cosh_avx2_ps				proc uses ebx,
 							vdivps ymm2,ymm1,ymm5
 							vfmadd213ps	ymm5,ymm1,ymm2
 							vblendvps ymm5,ymm5,ymmword ptr [max_num_ps],ymm6
-							vmovaps ymmword ptr [edx],ymm5
-							
-							add ebx,32
+							vmovaps ymmword ptr [edx],ymm5					
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovaps ymm0,ymmword ptr [ebx]						
+							vmovaps ymm0,ymmword ptr [ecx]						
 							vminps ymm0,ymm0,ymmword ptr [exp_hi_ps]
 							vmaxps ymm0,ymm0,ymmword ptr [exp_lo_ps]
 							vandps ymm0,ymm0,ymmword ptr [pos_sign_mask_d]	;; x = ymm0	
@@ -100,20 +98,20 @@ cosh_avx2_ps				proc uses ebx,
 							vblendvps ymm5,ymm5,ymmword ptr [max_num_ps],ymm6
 
 							movaps xmm6,xmm5	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm5,1 
 							movaps xmmword ptr [edx],xmm5
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
 
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -129,10 +127,13 @@ cosh_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 
 			done:			vzeroupper
-							ret
-cosh_avx2_ps				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+cosh_avx2_ps@@12			endp
 
-;;		extern "C" cosh_avx2_pd(double const *in,int n,double *out);
+
 cosh_avx2_macro_pd			macro
 							vmulpd ymm7,ymm5,ymmword ptr [one_half_pd]
 							vmovupd ymm1,ymmword ptr [one_pd]
@@ -183,34 +184,34 @@ cosh_avx2_macro_pd			macro
 							vpsllq ymm3,ymm3,52								;; k = ymm3
 							vmulpd ymm3,ymm3,ymm2
 							endm
-
-cosh_avx2_pd				proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8
+;;									ecx,			edx
+;;		extern "C" cosh_avx2_pd(double const *in,double *out,int n);
+cosh_avx2_pd@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
 							vxorpd ymm7,ymm7,ymm7
 
-				 @@:		vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0	
+				 @@:		vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0	
 							vandpd ymm0,ymm0,ymmword ptr[pos_sign_mask_q]
 							vmovupd ymm6,ymmword ptr[loge2_pd]
 							vaddpd ymm6,ymm6,ymmword ptr [max_log_pd]		;; max = ymm6
@@ -236,17 +237,17 @@ cosh_avx2_pd				proc uses ebx,
 							vblendvpd ymm3,ymm3,ymmword ptr [pos_sign_mask_q],ymm6
 							vmovapd ymmword ptr [edx],ymm3
 							
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovapd ymm0,ymmword ptr [ebx]					;; x = ymm0	
+							vmovapd ymm0,ymmword ptr [ecx]					;; x = ymm0	
 							vandpd ymm0,ymm0,ymmword ptr[pos_sign_mask_q]
 							vmovupd ymm6,ymmword ptr[loge2_pd]
 							vaddpd ymm6,ymm6,ymmword ptr [max_log_pd]		;; max = ymm6
@@ -271,11 +272,11 @@ cosh_avx2_pd				proc uses ebx,
 							vaddpd ymm3,ymm1,ymm2
 							vblendvpd ymm3,ymm3,ymmword ptr [pos_sign_mask_q],ymm6
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm3   
@@ -291,6 +292,9 @@ cosh_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm6
 
 			done:			vzeroupper
-							ret
-cosh_avx2_pd				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+cosh_avx2_pd@@12			endp
 							end

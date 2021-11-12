@@ -52,10 +52,10 @@
     <ClInclude Include="headers\special_funcs.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="basic_operations.h">
+    <ClInclude Include="headers\basic_funcs.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="headers\basic_funcs.h">
+    <ClInclude Include="headers\basic_operations.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>

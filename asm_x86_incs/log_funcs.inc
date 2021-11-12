@@ -1,4 +1,4 @@
-.model flat,c
+.model flat
 
 ;; ============================= CONSTANTS =================================
 .const 
@@ -97,14 +97,3 @@ qint_tentwothree			qword	4607182418800017408,4607182418800017408
 
 ;; ============================ PROTOTYPES =================================
 
-
-log_avx2_pd	proto,
-			x_ptr:ptr real8,
-			n_arg:dword,
-			out_ptr:ptr real8
-
-
-log_avx2_ps	proto,
-			x_ptr:ptr real4,
-			n_arg:dword,
-			out_ptr:ptr real4

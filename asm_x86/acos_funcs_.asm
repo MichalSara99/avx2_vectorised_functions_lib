@@ -1,7 +1,6 @@
 include asm_x86_incs/acos_funcs.inc
 
 .code
-;; extern "C" bool acos_avx2_pd(double const *x, int n, double *out);
 acos_avx2_macro_pd			macro
 							;; this is for a > 0.625 case
 							vmovupd ymm3,ymmword ptr [one_pd]
@@ -45,30 +44,31 @@ acos_avx2_macro_pd			macro
 							vfmadd213pd	ymm4, ymm0,ymm0
 							endm
 
-acos_avx2_pd				proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8
+;;									ecx,			edx		
+;; extern "C" bool acos_avx2_pd(double const *x,double *out, int n);
+acos_avx2_pd@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
 
-					@@:		vmovapd ymm0,ymmword ptr [ebx]						;; x = ymm0
+					@@:		vmovapd ymm0,ymmword ptr [ecx]						;; x = ymm0
 							vmovupd ymm3,ymmword ptr [op5_pd]
 							vcmpgtpd ymm1,ymm0,ymm3								;; init_mask = ymm1
 							vmulpd ymm2,ymm0,ymm3
@@ -93,7 +93,7 @@ acos_avx2_pd				proc uses ebx,
 
 							vmovapd ymm7,ymm2										;; my_sign = ymm7
 							vcmpltpd ymm2,ymm0,ymmword ptr [small_pd]				;; ymm2 = a < 1.0e-8
-							vblendvpd ymm6,ymm6,ymmword ptr [ebx],ymm2
+							vblendvpd ymm6,ymm6,ymmword ptr [ecx],ymm2
 							vcmpgtpd ymm1,ymm0,ymmword ptr [one_pd]
 							vxorpd ymm0,ymm0,ymm0
 							vblendvpd ymm6,ymm6,ymm0,ymm1							;; z = ymm6
@@ -109,18 +109,18 @@ acos_avx2_pd				proc uses ebx,
 							vfmadd231pd ymm6,ymm4,ymmword ptr [pi_o_4_pd]
 
 							vmovapd ymmword ptr [edx],ymm6
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovapd ymm0,ymmword ptr [ebx]						;; x = ymm0
+							vmovapd ymm0,ymmword ptr [ecx]						;; x = ymm0
 							vmovupd ymm3,ymmword ptr [op5_pd]
 							vcmpgtpd ymm1,ymm0,ymm3								;; init_mask = ymm1
 							vmulpd ymm2,ymm0,ymm3
@@ -145,7 +145,7 @@ acos_avx2_pd				proc uses ebx,
 
 							vmovapd ymm7,ymm2										;; my_sign = ymm7
 							vcmpltpd ymm2,ymm0,ymmword ptr [small_pd]				;; ymm2 = a < 1.0e-8
-							vblendvpd ymm6,ymm6,ymmword ptr [ebx],ymm2
+							vblendvpd ymm6,ymm6,ymmword ptr [ecx],ymm2
 							vcmpgtpd ymm1,ymm0,ymmword ptr [one_pd]
 							vxorpd ymm0,ymm0,ymm0
 							vblendvpd ymm6,ymm6,ymm0,ymm1							;; z = ymm6
@@ -160,11 +160,11 @@ acos_avx2_pd				proc uses ebx,
 							vfmadd231pd ymm6,ymm4,ymmword ptr [pmore_bits_pd]	
 							vfmadd231pd ymm6,ymm4,ymmword ptr [pi_o_4_pd]
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm6   
@@ -179,11 +179,13 @@ acos_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 8],xmm2
 							vmovsd real8 ptr [edx + 16],xmm5
 		
-			done:			vzeroupper	
-							ret
-acos_avx2_pd				endp
+			done:			vzeroupper
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+acos_avx2_pd@@12			endp
 
-;; extern "C" bool acos_avx2_ps(float const *x, int n, float *out);
 acos_avx2_macro_ps			macro
 							vmovaps	ymm6,ymm0
 							vcmpltps ymm7,ymm0,ymm7							;; sign = ymm7 = x < 0.0
@@ -220,30 +222,32 @@ acos_avx2_macro_ps			macro
 							vblendvps ymm3,ymm3,ymm5,ymm7
 							endm
 
-acos_avx2_ps				proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4
 
-							mov ebx,x_ptr
-							test ebx,1fh
+;;									ecx,		edx,
+;; extern "C" bool acos_avx2_ps(float const *x, float *out, int n);
+acos_avx2_ps@@12	 		proc near
+								n_arg	textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
+							
+							test ecx,1fh
 							jnz done
 
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
 
-					@@:		vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0
+					@@:		vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0
 							vmovups ymm1,ymmword ptr [op5_ps]
 							vcmpgtps ymm2,ymm0,ymm1							;; init_mask = ymm2
 							vmulps ymm3,ymm1,ymm0
@@ -264,18 +268,18 @@ acos_avx2_ps				proc uses ebx,
 							vfmadd213ps ymm3,ymm5,ymm6
 							vfmadd231ps ymm3,ymm2,ymmword ptr[pi_o_4_ps]	
 							vmovaps ymmword ptr [edx],ymm3
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovaps ymm0,ymmword ptr [ebx]					;; x = ymm0
+							vmovaps ymm0,ymmword ptr [ecx]					;; x = ymm0
 							vmovups ymm1,ymmword ptr [op5_ps]
 							vcmpgtps ymm2,ymm0,ymm1							;; init_mask = ymm2
 							vmulps ymm3,ymm1,ymm0
@@ -297,19 +301,19 @@ acos_avx2_ps				proc uses ebx,
 							vfmadd231ps ymm3,ymm2,ymmword ptr[pi_o_4_ps]
 
 							movaps xmm6,xmm3	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm3,1 
 							movaps xmmword ptr [edx],xmm3
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -325,6 +329,9 @@ acos_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 	
 			done:			vzeroupper
-							ret
-acos_avx2_ps				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+acos_avx2_ps@@12			endp
 							end

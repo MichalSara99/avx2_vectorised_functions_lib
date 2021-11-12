@@ -1,7 +1,6 @@
 include asm_x86_incs/expint_funcs.inc
 
 .code
-;;		extern "C" bool expint_avx2_ps(float const *in,int size,float *out);
 expint_avx2_macro_ps		macro
 							vandps ymm0,ymm0,ymmword ptr [pos_sign_mask_d]	
 							vmaxps ymm0,ymm0,ymmword ptr [int_min_norm]	
@@ -39,7 +38,7 @@ expint_avx2_macro_ps		macro
 							vaddps ymm0,ymm0,ymm5
 							vorps ymm3,ymm0,ymm1								;; ymm3 = log
 							;;exp ends here
-							vmovaps ymm0,ymmword ptr [ebx]
+							vmovaps ymm0,ymmword ptr [ecx]
 							vxorps ymm7,ymm7,ymm7
 							vcmpltps ymm5,ymm0,ymm7							;; x_mask = ymm5
 							vcmpgeps ymm7,ymm0,ymm7							;; x_pos_maks = ymm7
@@ -81,33 +80,32 @@ expint_avx2_macro_ps		macro
 							vmulps ymm3,ymm3,ymm2										;; s = ymm3
 							vdivps ymm3,ymm3,ymm0
 							endm
-
-expint_avx2_ps				proc uses ebx,
-									x_ptr:ptr real4,
-									n_arg:dword,
-									out_ptr:ptr real4
+;;											ecx,		edx
+;;		extern "C" bool expint_avx2_ps(float const *in,float *out,int size);
+expint_avx2_ps@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,8
+							mov ebx,n_arg
+							cmp ebx,8
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffff8h
-							sub eax,ecx
-							shr ecx,3
+							mov eax,ebx
+							and ebx,0fffffff8h
+							sub eax,ebx
+							shr ebx,3
 
-
-					@@:		vmovaps ymm0,ymmword ptr [ebx]					; x = ymm0
+					@@:		vmovaps ymm0,ymmword ptr [ecx]					; x = ymm0
 							vxorps ymm7,ymm7,ymm7
 							vcmpleps ymm1,ymm0,ymm7							; invalid_mask = ymm1
 							;; ======
@@ -115,18 +113,17 @@ expint_avx2_ps				proc uses ebx,
 							;; ======
 							vblendvps ymm3,ymm3,ymm1,ymm4
 							vmovaps ymmword ptr [edx],ymm3
-
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
-							vmovaps ymm0,ymmword ptr [ebx]					; x = ymm0
+							vmovaps ymm0,ymmword ptr [ecx]					; x = ymm0
 							vxorps ymm7,ymm7,ymm7
 							vcmpleps ymm1,ymm0,ymm7							; invalid_mask = ymm1
 							;; ======
@@ -135,20 +132,19 @@ expint_avx2_ps				proc uses ebx,
 							vblendvps ymm3,ymm3,ymm1,ymm4
 
 							movaps xmm6,xmm3	
-							cmp ecx,4
+							cmp ebx,4
 							jl short rem_left
 							vextractf128 xmm6,ymm3,1 
 							movaps xmmword ptr [edx],xmm3
 							add edx,16
-							sub ecx,4
+							sub ebx,4
 							jz done
 
-
-			rem_left:		cmp ecx,1
+			rem_left:		cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		movss real4 ptr [edx],xmm6
@@ -164,10 +160,13 @@ expint_avx2_ps				proc uses ebx,
 							movss real4 ptr [edx + 8],xmm4
 
 				done:		vzeroupper
-							ret
-expint_avx2_ps				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+expint_avx2_ps@@12			endp
 
-;;		extern "C" bool expint_avx2_pd(double const *in,int size,double *out);
+
 expint_avx2_macro_pd		macro
 							vandpd ymm0,ymm0,ymmword ptr[pos_sign_mask_q]
 							;; here starts log:
@@ -208,7 +207,7 @@ expint_avx2_macro_pd		macro
 							;; here ends log:
 							
 							;; expm starts here:
-							vmovapd ymm0,ymmword ptr[ebx]
+							vmovapd ymm0,ymmword ptr[ecx]
 							vxorpd ymm7,ymm7,ymm7
 							vcmpltpd ymm5,ymm0,ymm7								;; x_mask = ymm5
 							vcmpgepd ymm7,ymm0,ymm7								;; x_pos_maks = ymm7
@@ -252,32 +251,32 @@ expint_avx2_macro_pd		macro
 							vmulpd ymm3,ymm3,ymm2										;; s = ymm3
 							vdivpd ymm3,ymm3,ymm0	
 							endm
-
-expint_avx2_pd				proc uses ebx,
-									x_ptr:ptr real8,
-									n_arg:dword,
-									out_ptr:ptr real8
+;;											ecx,		edx
+;;		extern "C" bool expint_avx2_pd(double const *in,double *out,int size);
+expint_avx2_pd@@12			proc near
+								n_arg		textequ		<[ebp + 8]>
+							push ebp
+							mov ebp,esp
+							push ebx
 
 							xor eax,eax
 
-							mov ebx,x_ptr
-							test ebx,1fh
+							test ecx,1fh
 							jnz done
 							
-							mov edx,out_ptr
 							test edx,1fh
 							jnz done
 
-							mov ecx,n_arg
-							cmp ecx,4
+							mov ebx,n_arg
+							cmp ebx,4
 							jl too_short
 
-							mov eax,ecx
-							and ecx,0fffffffch
-							sub eax,ecx
-							shr ecx,2
+							mov eax,ebx
+							and ebx,0fffffffch
+							sub eax,ebx
+							shr ebx,2
 
-					@@:		vmovapd ymm0,ymmword ptr[ebx]
+					@@:		vmovapd ymm0,ymmword ptr[ecx]
 							vxorpd ymm7,ymm7,ymm7
 							vcmplepd ymm7,ymm0,ymm7								;; inv_mask = ymm7
 							;; =====
@@ -287,19 +286,19 @@ expint_avx2_pd				proc uses ebx,
 							vblendvpd ymm3,ymm3,ymmword ptr [pos_sign_mask_q],ymm5
 							vmovapd ymmword ptr [edx],ymm3
 
-							add ebx,32
+							add ecx,32
 							add edx,32
-							dec ecx
+							dec ebx
 							jnz @B
 
 
-							mov ecx,eax
-			too_short:		or ecx,ecx								
+							mov ebx,eax
+			too_short:		or ebx,ebx								
 							mov eax,1
 							jz done
 
 
-							vmovapd ymm0,ymmword ptr[ebx]
+							vmovapd ymm0,ymmword ptr[ecx]
 							vxorpd ymm7,ymm7,ymm7
 							vcmplepd ymm7,ymm0,ymm7								;; inv_mask = ymm7
 							;; =====
@@ -308,11 +307,11 @@ expint_avx2_pd				proc uses ebx,
 							vblendvpd ymm3,ymm3,ymm1,ymm4
 							vblendvpd ymm6,ymm3,ymmword ptr [pos_sign_mask_q],ymm5
 
-							cmp ecx,1
+							cmp ebx,1
 							je short one_left
-							cmp ecx,2
+							cmp ebx,2
 							je short two_left
-							cmp ecx,3
+							cmp ebx,3
 							je short three_left
 
 			one_left:		vmovsd real8 ptr [edx],xmm6   
@@ -328,6 +327,9 @@ expint_avx2_pd				proc uses ebx,
 							vmovsd real8 ptr [edx + 16],xmm5
 
 			done:			vzeroupper
-							ret
-expint_avx2_pd				endp
+							pop ebx
+							mov esp,ebp
+							pop ebp
+							ret 4
+expint_avx2_pd@@12			endp
 							end

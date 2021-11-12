@@ -5,46 +5,46 @@
 namespace __packed_avx2_
 {
 // packed double-precision floating-point cosine
-extern "C" bool cos_avx2_pd(double const *in_aligned_32, int size, double *out_aligned_32);
+extern "C" bool __vectorcall cos_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
 
 // packed single-precision floating-point cosine
-extern "C" bool cos_avx2_ps(float const *in_aligned_32, int size, float *out_aligned_32);
+extern "C" bool __vectorcall cos_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
 
 // packed double-precision floating-point sine
-extern "C" bool sin_avx2_pd(double const *in_aligned_32, int size, double *out_aligned_32);
+extern "C" bool __vectorcall sin_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
 
 // packed single-precision floating-point sine
-extern "C" bool sin_avx2_ps(float const *in_aligned_32, int size, float *out_aligned_32);
+extern "C" bool __vectorcall sin_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
 
 // packed double-precision floating-point tangens
-extern "C" bool tan_avx2_pd(double const *in_aligned_32, int size, double *out_aligned_32);
+extern "C" bool __vectorcall tan_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
 
 // packed single-precision floating-point tangens
-extern "C" bool tan_avx2_ps(float const *in_aligned_32, int size, float *out_aligned_32);
+extern "C" bool __vectorcall tan_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
 
 // packed double-precision floating-point cotangens
-extern "C" bool cot_avx2_pd(double const *in_aligned_32, int size, double *out_aligned_32);
+extern "C" bool __vectorcall cot_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
 
 // packed single-precision floating-point cotangens
-extern "C" bool cot_avx2_ps(float const *in_aligned_32, int size, float *out_aligned_32);
+extern "C" bool __vectorcall cot_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
 
 // packed double-precision floating-point arcus cosine
-extern "C" bool acos_avx2_pd(double const *in_aligned_32, int size, double *out_aligned_32);
+extern "C" bool __vectorcall acos_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
 
 // packed single-precision floating-point arcus cosine
-extern "C" bool acos_avx2_ps(float const *in_aligned_32, int size, float *out_aligned_32);
+extern "C" bool __vectorcall acos_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
 
 // packed double-precision floating-point arcus sine
-extern "C" bool asin_avx2_pd(double const *in_aligned_32, int size, double *out_aligned_32);
+extern "C" bool __vectorcall asin_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
 
 // packed single-precision floating-point arcus sine
-extern "C" bool asin_avx2_ps(float const *in_aligned_32, int size, float *out_aligned_32);
+extern "C" bool __vectorcall asin_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
 
 // packed double-precision floating-point arcus tangens
-extern "C" bool atan_avx2_pd(double const *in_aligned_32, int size, double *out_aligned_32);
+extern "C" bool __vectorcall atan_avx2_pd(double const *in_aligned_32, double *out_aligned_32, int size);
 
 // packed single-precision floating-point arcus tangens
-extern "C" bool atan_avx2_ps(float const *in_aligned_32, int size, float *out_aligned_32);
+extern "C" bool __vectorcall atan_avx2_ps(float const *in_aligned_32, float *out_aligned_32, int size);
 
 } // namespace __packed_avx2_
 
@@ -59,9 +59,9 @@ namespace avx2_math
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool cos_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_32)
+bool __vectorcall cos_avx2_packed(double const *in_aligned_32, double *out_aligned_32, int size)
 {
-    return __packed_avx2_::cos_avx2_pd(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::cos_avx2_pd(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -72,9 +72,9 @@ bool cos_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool cos_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32)
+bool __vectorcall cos_avx2_packed(float const *in_aligned_32, float *out_aligned_32, int size)
 {
-    return __packed_avx2_::cos_avx2_ps(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::cos_avx2_ps(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -85,9 +85,9 @@ bool cos_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool sin_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_32)
+bool __vectorcall sin_avx2_packed(double const *in_aligned_32, double *out_aligned_32, int size)
 {
-    return __packed_avx2_::sin_avx2_pd(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::sin_avx2_pd(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -98,9 +98,9 @@ bool sin_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool sin_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32)
+bool __vectorcall sin_avx2_packed(float const *in_aligned_32, float *out_aligned_32, int size)
 {
-    return __packed_avx2_::sin_avx2_ps(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::sin_avx2_ps(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -111,9 +111,9 @@ bool sin_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool tan_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_32)
+bool __vectorcall tan_avx2_packed(double const *in_aligned_32, double *out_aligned_32, int size)
 {
-    return __packed_avx2_::tan_avx2_pd(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::tan_avx2_pd(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -124,9 +124,9 @@ bool tan_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool tan_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32)
+bool __vectorcall tan_avx2_packed(float const *in_aligned_32, float *out_aligned_32, int size)
 {
-    return __packed_avx2_::tan_avx2_ps(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::tan_avx2_ps(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -137,9 +137,9 @@ bool tan_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool cot_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_32)
+bool __vectorcall cot_avx2_packed(double const *in_aligned_32, double *out_aligned_32, int size)
 {
-    return __packed_avx2_::cot_avx2_pd(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::cot_avx2_pd(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -150,9 +150,9 @@ bool cot_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool cot_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32)
+bool __vectorcall cot_avx2_packed(float const *in_aligned_32, float *out_aligned_32, int size)
 {
-    return __packed_avx2_::cot_avx2_ps(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::cot_avx2_ps(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -163,9 +163,9 @@ bool cot_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool acos_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_32)
+bool __vectorcall acos_avx2_packed(double const *in_aligned_32, double *out_aligned_32, int size)
 {
-    return __packed_avx2_::acos_avx2_pd(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::acos_avx2_pd(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -176,9 +176,9 @@ bool acos_avx2_packed(double const *in_aligned_32, int size, double *out_aligned
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool acos_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32)
+bool __vectorcall acos_avx2_packed(float const *in_aligned_32, float *out_aligned_32, int size)
 {
-    return __packed_avx2_::acos_avx2_ps(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::acos_avx2_ps(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -189,9 +189,9 @@ bool acos_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_3
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool asin_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_32)
+bool __vectorcall asin_avx2_packed(double const *in_aligned_32, double *out_aligned_32, int size)
 {
-    return __packed_avx2_::asin_avx2_pd(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::asin_avx2_pd(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -202,9 +202,9 @@ bool asin_avx2_packed(double const *in_aligned_32, int size, double *out_aligned
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool asin_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32)
+bool __vectorcall asin_avx2_packed(float const *in_aligned_32, float *out_aligned_32, int size)
 {
-    return __packed_avx2_::asin_avx2_ps(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::asin_avx2_ps(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -215,9 +215,9 @@ bool asin_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_3
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool atan_avx2_packed(double const *in_aligned_32, int size, double *out_aligned_32)
+bool __vectorcall atan_avx2_packed(double const *in_aligned_32, double *out_aligned_32, int size)
 {
-    return __packed_avx2_::atan_avx2_pd(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::atan_avx2_pd(in_aligned_32, out_aligned_32, size);
 }
 
 /**
@@ -228,9 +228,9 @@ bool atan_avx2_packed(double const *in_aligned_32, int size, double *out_aligned
  * \param out_aligned_32
  * \return boolean indicating success or failure
  */
-bool atan_avx2_packed(float const *in_aligned_32, int size, float *out_aligned_32)
+bool __vectorcall atan_avx2_packed(float const *in_aligned_32, float *out_aligned_32, int size)
 {
-    return __packed_avx2_::atan_avx2_ps(in_aligned_32, size, out_aligned_32);
+    return __packed_avx2_::atan_avx2_ps(in_aligned_32, out_aligned_32, size);
 }
 
 } // namespace avx2_math
